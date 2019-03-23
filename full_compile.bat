@@ -1,0 +1,1 @@
+start AHK2EXE.exe

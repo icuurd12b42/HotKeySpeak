@@ -1,0 +1,656 @@
+;Don't mess with spacing/whitespaces, it's a cheap text read function I use
+;comments and blank lines are allowed, no space, no tabs
+
+;colors are BBGGRR Hex Values
+
+
+;line number back color. se it to the color of the parent of the edit box
+LINENOBACKCOLOR
+272727
+;line number color, se it to a color compatible with the back color.
+LINENOCOLOR
+4A4A4A
+;Text Back Color is for the back of the text, this overrides the edit box back color.
+TEXTBACKCOLOR
+1E1E1E
+
+;Font Colors
+QUOTECOLOR
+44BBBB
+COMMENTCOLOR
+449944
+NUMBERCOLOR
+77BB77
+UNKNOWNWORDCOLOR
+AAAAAA
+KEYWORDCOLOR
+AA77CC
+FUNCTIONCOLOR
+DD77BB
+LITERALCOLOR
+9977DD
+CLASSFUNCCOLOR
+AA77AA
+STATICCLASSCOLOR
+CC44AA
+;looks like a function() but not found in the list
+USERFUNCTIONCOLOR
+AA6666
+;0056EB
+SELECTEDTEXTCOLOR
+784F26
+
+
+
+;the method to see if a character is a split character for word splitter, 
+;a whitespace, a stop char (for word select in editor)...
+;is using the character value as index mapped to a position in the string where x marks the flag
+;this allows for a fast lookup -> if(arr[char] == 'x') 
+;as opposed to looping through an array of characters to find the presence of the char in it -> if(arr.find(char))
+;it is a bit tricky to setup but worth the extra speed boost.
+;You don't need the entire string. Mark the End of the string with 2 extra characters <space>X or xX 
+;xX says any character after that is considered marked
+; X says any character after that is considered un-marked
+;...   x    xxx    x  xX 
+;...   x    xxx    x   X 
+;Update. given how hard it is to make sense of this, I changed the x to be anything but Space, the only time you need to use x if for flagging space the space position
+;Reference https://www.ascii-code.com/
+v-Null   v-Tab                  v-Space                                                                                        v-Last Byte DEL, a character never encountered in a file
+NSSEEEAB T      DDDDDNSEC SE G  S                                                                                                Used to set the 
+UOTTONCEBALVFCSSLCCCCAYTAEUSFGRUP                                                                                              v-Default for Higher Character
+LHXXTQKLSBFTFROIE1234KNBNMBCSSSSC!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ X<-EOL Marker 
+
+;Characters that split components
+SPLITTERS
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!"#$%&'()*+,-./          :;<=>?@                          [\]^ `                          {|}~ X
+
+
+
+;What constitutes a valid start for a variable or function name
+VALIDNAMESTART
+                                                                 ABCDEFGHIJKLMNOPQRSTUVWXYZ    _ abcdefghijklmnopqrstuvwxyz X
+;What constitutes a valid name to the end
+VALIDNAMEEND
+                                                0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ    _ abcdefghijklmnopqrstuvwxyz X
+
+;Space, tabs and order, usually everything below and including space
+WHITESPACE
+xxxxxxxxxx xx xxxxxxxxxxxxxxxxxxx X
+
+; What makes a quote... " or ' or both
+QUOTES
+                                  "    ' X
+;what characters constitute a string escape like \ for \n in most languages, specifically used for preventing \" or \' as end of string 
+STRINGESCAPE
+                                                                                            \ X
+
+;The characters used to pre-check if it's a possible comment, all chars in words below are here
+COMMENTCHARS
+                                          *    / X
+
+SINGLELINECOMMENT
+//
+
+MULTILINECOMMENTSTART
+/*
+
+MULTILINECOMMENTEND
+*/
+
+;Color to use on specific characters that were not process by the comment, quote or the word list system, use to color things like = an + for example
+COLORSET1
+CC44AA
+;And the characters for that color
+;Punctuation
+COLORSET1CHARS
+                                            , .           : X
+
+;anything not covered by color1 will be done with color2
+COLORSET2
+AA77CC
+
+;And the characters for that color
+;Math and operators
+COLORSET2CHARS
+                                 !   %&   *+ - /            <=>?                            \ ^                             | ~ X
+
+;Brackets
+COLORSET3
+AA6666
+COLORSET3CHARS
+                                        ()                 ;                               [ ]                             { } X
+
+;what remains I guess. anything else missed will have the BADCHARSCOLOR color
+COLORSET4
+44AACC
+COLORSET4CHARS
+                                   #$                           @                               ` X
+
+
+BADCHARSCOLOR
+4444aa
+AAAAFF
+
+;word selection stops on these
+SELECTBLOCKERS
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!"#$%&'()*+,-./          :;<=>?@                          [\]^ `                          {|}~ X
+
+;if the word selection started on the blockers above, then the word selection stops on these
+SELECTREVERSEBLOCKERS
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!"    '()  x x 0123456789:;   ? ABCDEFGHIJKLMNOPQRSTUVWXYZ[ ] _`abcdefghijklmnopqrstuvwxyz{|}~ X
+
+; 0 and 1
+BASEBIN
+                                                01 X
+
+; 01234567
+BASEOCT
+                                                01234567 X
+
+;0123456789ABCDEFabcdef
+BASEHEX
+                                                0123456789       ABCDEF                          abcdef X
+
+;0123456789
+BASEDEC
+                                                0123456789 X
+
+;Pre-checks, first character of each possible prefix. in this case 0 for 0x, 0b and 0o
+BINPRECHECK
+                                                0 X
+
+OCTPRECHECK
+                                                0 X
+
+HEXPRECHECK
+                                                0 X
+
+BINPREFIXES {
+0b
+0B
+}
+
+OCTPREFIXES {
+0o
+0O
+}
+HEXPREFIXES {
+0x
+0X
+}
+
+;Number Pre-checks, 0123456789 and dot
+NUMPRECHECK
+                                              . 0123456789 X
+
+;Suffix for 0.2f and 10lfor example
+;Put the longer words first if they share start characters, eg: ul before u
+NUMSUFFIXES {
+ul
+UL
+u
+U
+f
+F
+l
+L
+}
+
+;The color of the binding characters
+WORDBINDERCOLOR
+00FFD0
+;characters that bind word... for Class::Something()
+;Put the longer words first if they share start characters
+WORDBINDERS {
+::
+->
+.
+}
+;the fast pre-check characters for the words above, set a flag for ever fist characters for the words listed
+; for example : for ::, - for -> and . for .
+BINDERSPRECHECK
+                                             -.           : X
+
+KEYWORDS {
+break
+for
+new
+var
+continue
+function
+return
+void
+delete
+if
+this
+while
+else
+in
+typeof
+with
+case
+debugger
+export
+super
+catch
+default
+extends
+switch
+class
+do
+finally
+throw
+const
+enum
+import
+try
+}
+
+LITERALS {
+true
+false
+undefined
+null
+infinity
+NaN
+}
+
+FUNCTIONS {
+;JScript ECMAScript Edition 3 global functions
+eval
+parseInt
+parseFloat
+isNaN
+isFinite
+decodeURI
+decodeURIComponent
+encodeURI
+encodeURIComponent
+
+;AHK Ported functions
+KeyWaitAll
+NumGet
+Abs
+ACos
+Asc
+ASin
+ATan
+Ceil
+Chr
+Cos
+Exp
+FileExist
+Floor
+GetKeyState
+IL_Add
+IL_Create
+IL_Destroy
+InStr
+IsFunc
+IsLabel
+Ln
+Log
+LV_Add
+LV_Delete
+LV_DeleteCol
+LV_GetCount
+LV_GetNext
+LV_GetText
+LV_Insert
+LV_InsertCol
+LV_Modify
+LV_ModifyCol
+LV_SetImageList
+Mod
+RegExMatch
+RegExReplace
+Round
+SB_SetIcon
+SB_SetParts
+SB_SetText
+Sin
+Sqrt
+StrLen
+SubStr
+Tan
+SetTimer
+TimerExists
+TimerClearAll
+TimerTimeLeft
+TV_Add
+TV_Delete
+TV_Get
+TV_GetChild
+TV_GetCount
+TV_GetNext
+TV_GetParent
+TV_GetPrev
+TV_GetSelection
+TV_GetText
+TV_Modify
+VarSetCapacity
+WinActive
+WinExist
+Format
+GetKeyName
+GetKeySC
+GetKeyVK
+IsByRef
+IsObject
+LoadPicture
+LTrim
+MenuGetHandle
+MenuGetName
+Ord
+RTrim
+StrGet
+StrPut
+StrReplace
+StrSplit
+Trim
+BlockInput
+Click
+ClipWait
+Control
+ControlClick
+ControlFocus
+ControlGet
+ControlGetFocus
+ControlGetPos
+ControlGetText
+ControlMove
+ControlSend
+ControlSendRaw
+ControlSetText
+CoordMode
+Critical
+DetectHiddenText
+DetectHiddenWindows
+FormatTime
+GroupActivate
+GroupAdd
+GroupClose
+GroupDeactivate
+Gui
+GuiControl
+GuiControlGet
+Hotkey
+ImageSearch
+IniDelete
+IniRead
+IniWrite
+InputBox
+KeyWait
+Menu
+MouseClick
+MouseClickDrag
+MouseGetPos
+MouseMove
+MsgBox
+OutputDebug
+PixelGetColor
+PixelSearch
+PostMessage
+Process
+Progress
+Random
+RegRead
+Run
+RunWait
+Send
+SendEvent
+SendInput
+SendMessage
+SendMode
+SendPlay
+SendRaw
+SetCapsLockState
+SetControlDelay
+SetDefaultMouseSpeed
+SetEnv
+SetFormat
+SetKeyDelay
+SetMouseDelay
+SetNumLockState
+SetScrollLockState
+SetStoreCapslockMode
+SetTitleMatchMode
+SetWinDelay
+Sleep
+SoundBeep
+SoundGet
+SoundGetWaveVolume
+SoundPlay
+SoundSet
+SoundSetWaveVolume
+SplashImage
+SplashTextOff
+SplashTextOn
+SplitPath
+StatusBarGetText
+StatusBarWait
+StringGetPos
+StringLeft
+StringLen
+StringLower
+StringMid
+StringReplace
+StringRight
+StringSplit
+StringTrimLeft
+StringTrimRight
+StringUpper
+Suspend
+SysGet
+ToolTip
+Transform
+TrayTip
+WinActivate
+WinActivateBottom
+WinClose
+WinGet
+WinGetActiveStats
+WinGetActiveTitle
+WinGetClass
+WinGetPos
+WinGetText
+WinGetTitle
+WinHide
+WinKill
+WinMaximize
+WinMenuSelectItem
+WinMinimize
+WinMinimizeAll
+WinMinimizeAllUndo
+WinMove
+WinRestore
+WinSet
+WinSetTitle
+WinShow
+WinWait
+WinWaitActive
+WinWaitClose
+WinWaitNotActive
+SendLevel
+SetBuiltInVar
+GetBuiltInVar
+}
+
+;The Static Classes can be recognised exacly as they would appear per vadum in the code. 
+;these definitions are strict and does not allow variable.MemberFunction().SomeOtherFunction() sintax
+;nor does it allow Class.MemberFunction().SomeOtherFunction()
+;Allowed:
+;Class
+;Class()
+;Class.Function()
+;Class.Property.Function()
+;Class.Property.Property.Function()
+;See CLASSFUNCS below for a catch all method
+STATICCLASS {
+;nothing here for this file
+
+}
+
+;Dangling Class Functions
+;The system is not smart enough to know the type of a variable, but it can at least limit the options
+;when it encounters Something.Function or Something().Function(), it restricts the search to these
+;It means the wrong function may be tacked on the wrong item. but it at least helps the for the typos
+;you can mirror some of the static classes functions here if they can be tacked on to variables
+CLASSFUNCS {
+;JScript ECMAScript Edition 3 Objects and Member Functions
+test
+test.test
+Object
+Function
+Array
+String
+Boolean
+Number
+Date
+RegExp
+Error
+EvalError
+RangeError
+ReferenceError
+SyntaxError
+TypeError
+URIError
+Math
+
+.prototype
+.constructor
+.toString
+.toLocaleString
+.valueOf
+.hasOwnProperty
+.isPrototypeOf
+.propertyIsEnumerable
+.apply
+.call
+.length
+.HasInstance
+.concat
+.join
+.pop
+.push
+.reverse
+.shift
+.slice
+.sort
+.splice
+.unshift
+.Put
+.fromCharCode
+.charAt
+.charCodeAt
+.indexOf
+.lastIndexOf
+.localeCompare
+.match
+.replace
+.search
+.split
+.substring
+.toLowerCase
+.toLocaleLowerCase
+.toUpperCase
+.toLocaleUpperCase
+.MAX_VALUE
+.MIN_VALUE
+.NaN
+.NEGATIVE_INFINITY
+.POSITIVE_INFINITY
+.toFixed
+.toExponential
+.toPrecision
+.E
+.LN10
+.LN2
+.LOG2E
+.LOG10E
+.PI
+.SQRT1_2
+.SQRT2
+.abs
+.acos
+.asin
+.atan
+.atan2
+.ceil
+.cos
+.exp
+.floor
+.log
+.max
+.min
+.pow
+.random
+.round
+.sin
+.sqrt
+.tan
+.parse
+.UTC
+.toDateString
+.toTimeString
+.toLocaleDateString
+.toLocaleTimeString
+.getTime
+.getFullYear
+.getUTCFullYear
+.getMonth
+.getUTCMonth
+.getDate
+.getUTCDate
+.getDay
+.getUTCDay
+.getHours
+.getUTCHours
+.getMinutes
+.getUTCMinutes
+.getSeconds
+.getUTCSeconds
+.getMilliseconds
+.getUTCMilliseconds
+.getTimezoneOffset
+.setTime
+.setMilliseconds
+.setUTCMilliseconds
+.setSeconds
+.setUTCSeconds
+.setMinutes
+.setUTCMinutes
+.setHours
+.setUTCHours
+.setDate
+.setUTCDate
+.setMonth
+.setUTCMonth
+.setFullYear
+.setUTCFullYear
+.toUTCString
+.exec
+.test
+.source
+.global
+.ignoreCase
+.multiline
+.lastIndex
+.name
+.message
+.EvalError
+.RangeError
+.ReferenceError
+.SyntaxError
+.TypeError
+.URIError
+.NativeError
+EvalError
+RangeError
+ReferenceError
+SyntaxError
+TypeError
+URIError
+NativeError
+}
+
