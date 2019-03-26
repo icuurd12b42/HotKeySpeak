@@ -341,7 +341,7 @@ Class Interpreter
 			return
 		}
     }
-    Exec(Code)
+    Exec(Code, tvitem := "")
     {
 		
 		try  ; Attempts to execute code.
@@ -375,6 +375,11 @@ Class Interpreter
 			Debug.SetStack(stack)
 
 			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+			if(tvitem != "")
+			{
+				Debug.WriteNL(">Item(" . tvitem . ") Press Enter on this line to view.")
+				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+			}
 			Debug.WriteNL("",Debug.ErrCodingInfo)
 			if(ProcessMonitor.IsWindowMine())
 			{

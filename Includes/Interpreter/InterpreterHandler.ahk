@@ -29,7 +29,7 @@ Class InterpreterHandler
                 if(code)
                 {
                     Debug.WriteStackPushPop("InterpreterHandler.OnProcessActivate().RunCode",Debug.ErrLevelCore)
-                    InterpreterHandler.m_CurrentInterpreter.Exec(code)
+                    InterpreterHandler.m_CurrentInterpreter.Exec(code, TVHelper.GetSelectedItem())
                 }
             }
             
@@ -72,7 +72,7 @@ Class InterpreterHandler
                     if(code)
                     {
                         Debug.WriteStackPushPop("InterpreterHandler.OnItemActivate().RunCode",Debug.ErrLevelCore)
-                        InterpreterHandler.m_CurrentInterpreter.Exec(code)
+                        InterpreterHandler.m_CurrentInterpreter.Exec(code, VHelper.GetSelectedItem())
                     }
                 }
             }
