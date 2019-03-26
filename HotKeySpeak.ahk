@@ -17,7 +17,7 @@ Document Syntax highlighting
 Add Js Static classes to syntax
 add ColorUV to documentation
 add goto line number on code execution error >suplementing the >Item(N) system to include line
-
+move ini and log file to user directory
 
 See if I can fix the Message box beeping
 
