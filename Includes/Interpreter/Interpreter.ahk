@@ -377,7 +377,6 @@ Class Interpreter
 			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
 			if(tvitem != "")
 			{
-				Debug.WriteNL(">Item(" . tvitem . ") Press Enter on this line to view.")
 				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
 			}
 			Debug.WriteNL("",Debug.ErrCodingInfo)
