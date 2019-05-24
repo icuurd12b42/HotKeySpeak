@@ -241,7 +241,7 @@ ToHotKeySpecs(String)
     ret := StrReplace(ret,"Alt + ","!")
     ret := StrReplace(ret,"Shift + ","+")
     ret := StrReplace(ret,"Win + ","#")
-    ret := StrReplace(ret," + ","&")
+    ret := StrReplace(ret,"Ctrl","^")
     ;ret := StrReplace(ret,"&"," & ")
     ;;arr := StrSplit(ret,"&")
     try
@@ -251,7 +251,6 @@ ToHotKeySpecs(String)
     }
     catch e 
     {
-        Debug.MsgBox("That key combination is not valid!")
         gSuspendKeyRecording := true
         SetTimer, SuspendedRecording, -500
         return String

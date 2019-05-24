@@ -25,7 +25,6 @@ class GlobalEventHandler
             return
         Debug.WriteStackPushPop("GlobalEventHandler.SetupHotKey() " . KeyName . " " . ONOFF,Debug.ErrLevelCore)
         Try {
-            Hotkey, %KeyName%, GlobalHotKeyHandler, %ONOFF%
         }
         catch e
         {
