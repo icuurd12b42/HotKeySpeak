@@ -19,7 +19,7 @@ Has a home brew code box for editing code
 Has a "Edit With MS Code" integration
 
 
-##Code Box Issues
+## Code Box Issues
 
 The Code Box is broken and does not render the text fully, giving the impression you lost code and that caret is not moving right. selecting the tex will redraw the code properly.
 
@@ -31,7 +31,7 @@ I recomend you use the External Code Editor method available bottom right button
 
 
 
-##Other Issues
+## Other Issues
 
 If you navigate directly to the HotKeySpeak inteface from an application that is monitored by the program, the program will still think it's in the program and will send command to itself
 
