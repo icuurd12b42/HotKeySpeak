@@ -1,22 +1,20 @@
 # HotKeySpeak
-Hot Key Speak, a AutoHotKey based system allowing voice commands and categorizing hot key actions by application, by window or by context.
+Hot Key Speak is a AutoHotKey based system that allows defining javascript Command/Macros for Hot Keys and Voice Recognition. Macros are contextual to the active application.
 
-
+##Features
+1. Folder like Tree Context Nodes and Groups allows defining contextual commands.
+2. Multiple Words or Sentences can run the same Command or activate a Context Node.
+3. Application Context Nodes. The macros are not global, they are associated with the active application.
+4. Window Context Nodes, Context Node and Groups allows to structure a context tree for the macros.
+5. Written in AHK though the scripting language used for programming actions is JavaScript (ECMA3!! BE MINDFUL)
+6. Has a home brew code box for editing code*
+7. Has a "Edit With MS Code" integration
+8. You can export and import parts of the command tree. !Make sure you trust the code the person shares with you!
 
 [Sneak Peak](https://icuurd12b42.github.io/HKSHelp/default.html?topic=MainUI)
 
 
-You can setup what application voice commands and hot keys belong to
 
-You can setup what active window voice commands and hot keys belong to
-
-You can setup what context voice commands and hot keys belong to, like and "edit" context where the only subsequent actions will be "cut, "copy" and "paste"
-
-Written in AHK though the scripting language used for programming actions is JavaScript (ECMA3!! BE MINDFUL)
-
-Has a home brew code box for editing code
-
-Has a "Edit With MS Code" integration
 
 
 ## Installation
@@ -36,8 +34,11 @@ To make an exe
 8. Hit Convert
 The exe can be run from any location, including a desktop or a pinned task bar shortcut
 
+First run will show the console with every tracing message in the app making it slow to boot. Go in the options to set the console reporting to "Coder Information"
 
-## Code Box Issues
+
+
+## *Code Box Issues
 
 The Code Box is broken and does not render the text fully, giving the impression you lost code. Selecting the tex will redraw the code properly. 
 
@@ -61,4 +62,6 @@ Requires running with ahk 32bit.
 
 Full Compile Bat file was never completed.
 
-First run will show console with every tracing message. Got in the options to set the console reporting to "Coder Information"
+
+
+
