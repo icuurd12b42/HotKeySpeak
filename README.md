@@ -62,6 +62,10 @@ Requires running with ahk 32bit.
 
 Full Compile Bat file was never completed.
 
+Sometime the program quits, possibly a internal erro
+
+It's possible the program can crash the monitored application, use at own risk.
+
 
 
 
