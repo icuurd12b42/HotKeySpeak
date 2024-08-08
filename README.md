@@ -32,6 +32,7 @@ To make an exe
 4. Select <install_folder>\HotKeySpeak.ahk as source
 5. Select <install_folder>\HotKeySpeak.exe as destination
 6. Select <install_folder>\Graphics\Icons\HotKeySpeak.ico as icon
+7. Select ANSI 32Bit as Base File (bin)
 8. Hit Convert
 The exe can be run from any location, including a desktop or a pinned task bar shortcut
 
