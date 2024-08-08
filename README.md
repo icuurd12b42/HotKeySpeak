@@ -19,6 +19,21 @@ Has a home brew code box for editing code
 Has a "Edit With MS Code" integration
 
 
+## Installation
+1) Copy the files and folder structure on your PC
+2) Install AutohotKey to run HotKeySpeak.ahk
+   2.1 You must run HotKeySpeak.ahk from the install folder for the AutoHotKey interpreter to know the working folder. Make an exe to prevent this
+3) To make an exe
+   3.1) Run AutohotKey's "Convert .ahk to .exe"
+   3.2) Select <install_folder>\HotKeySpeak.ahk as source
+   3.3) Select <install_folder>\HotKeySpeak.exe as destination
+   3.4) Select <install_folder>\Graphics\Icons\HotKeySpeak.ico as icon
+   3.5) Select 1.1.26.1 ANSII 32Bit
+   3.6) Hit Convert
+
+The exe can be launched from anywhere and can be pinned
+
+
 ## Code Box Issues
 
 The Code Box is broken and does not render the text fully, giving the impression you lost code. Selecting the tex will redraw the code properly. 
