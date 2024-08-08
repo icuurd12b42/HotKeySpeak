@@ -21,13 +21,15 @@ Has a "Edit With MS Code" integration
 
 ## Code Box Issues
 
-The Code Box is broken and does not render the text fully, giving the impression you lost code and that caret is not moving right. selecting the tex will redraw the code properly.
+The Code Box is broken and does not render the text fully, giving the impression you lost code. Selecting the tex will redraw the code properly. 
 
-The Code box not longer does context sensitive help on highlighted keywords to the help file in github.
+Also the caret is not moving right, causing confusion when typing text. 
 
-Disabling the Code Box will fix these 2 issues. You can Disable Code Box by renaming tmcsyntaxEB.dll to tmcsyntaxEB.dll.old, or deleting the file or remove the reference from the code. You will not noger have highliting but the F1 context help will work.
+The Code box not longer does context sensitive help on highlighted keywords.
 
-I recomend you use the External Code Editor method available bottom right buttons below the native code box
+Disabling the Code Box will fix these issues. You can Disable Code Box by renaming tmcsyntaxEB.dll to tmcsyntaxEB.dll.old, or deleting the file or remove the reference from the code. You will not noger have highlighting but the F1 context help will work.
+
+I recomend you use the External Code Editor method available bottom right buttons below the native code box.
 
 
 
