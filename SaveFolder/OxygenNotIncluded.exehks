@@ -1,0 +1,606 @@
+<elements><element text="OxygenNotIncluded.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded.exe" appname="Oxygen Not Included"><Code>/*
+NOTE, all hot keys send are using my internal mapping in the game like R to rotate instead of O and maching 1,2,3 with f2 f3 f4...
+I tried to reset my "in game" keys to default but that is broken in the game domr oof the keys did not reset, 
+meaning it kept my redifined hot key, meaning Idesigne this using those...
+so you may have to edit the places where the keys are defined
+*/
+
+
+/*
+This code hits alt+s to enable screen shoot mode when using the wheel
+to allow soming further out
+on zoom out, the olverlay is removed, turning on screen shot mode
+on zoom in the overlay is brought back to allow editing zoomed at any level
+*/
+var ResetAt = 0; //a tick is every 100 ms (not really accurate), How many ticks after a zoom is done before the overlay is enabled
+
+
+var oldCol = "";
+var sameColCt = 0; 
+var lastCornerCol = ToNCV("0x000000");
+var doScrolling = true;
+
+//The position of the timer color check, is dependant on the UI scaling setting in the options
+var p = [59,18];
+//we are aiming for that red triangle
+var referenceTimerCol = ToNCV("0xF74D4A");
+
+function isTimerVisible()
+{
+    CoordMode("Pixel", "Client");
+    var timerCol = ToNCV(PixelGetColor(p[0],p[1], "RGB"));
+    return (vectdist(timerCol, referenceTimerCol) &lt; .1);
+}
+//this function was used to restore the game state after a mouse wheel, it too clucky
+//and eventually I simply used the mouse wheel to oggle the edit mode back anyway
+function DoIt()
+{
+//OutputDebug("How the fuck are you even still running afer 5 restarts");
+
+return; //fuck that shit middle click brings the interface back anyway
+
+    if(!doScrolling) return;
+    CoordMode("Pixel", "Client");
+    var cornerCol = ToNCV(PixelGetColor(1,1, "RGB"));
+    
+    //OutputDebug(vectdist(cornerCol, lastCornerCol));
+    if(vectdist(cornerCol, [0,0,0]) != 0 )
+    {
+        if(vectdist(cornerCol, lastCornerCol) &lt; .06)
+        {
+            //OutputDebug("Same Color");
+            sameColCt --;
+            if(sameColCt==0 &amp;&amp; !isTimerVisible())
+            {
+                //OutputDebug("alt f");
+                Send("!s");
+                doScrolling = false;
+            }
+        }
+        else
+        {
+            //OutputDebug("Color Diff")
+            sameColCt = Math.max(sameColCt,4);
+            if(isTimerVisible())
+            {
+                //OutputDebug("alt f");
+                Send("!s");
+                doScrolling = false;
+            }
+        }
+    }
+    lastCornerCol = cornerCol;
+}
+//fuck that shit even more
+//SetTimer('DoIt();', "50");
+
+
+function ToNCV(col)
+{
+  var c = "" + col;
+  var r = parseInt(c.substring(2,4), 16)/255;
+  var g = parseInt(c.substring(4,6), 16)/255;
+  var b = parseInt(c.substring(6,8), 16)/255;
+  var d = Math.sqrt(r*r+g*g+b*b);
+  if(d != 0)
+  {
+    r/=d;
+    g/=d;
+    b/=d;
+  }
+  return ([r,g,b]);
+}
+
+//and if the color distance between the 2 is close enough..
+function vectdist(a,b)
+{
+   var dx = a[0] - b[0]; 
+   var dy = a[1] - b[1]; 
+   var dz = a[2] - b[2];
+   dx*=dx;
+   dy*=dy;
+   dz*=dz;
+   return Math.sqrt(dx+dy+dz);
+}
+
+
+function isMouseOverPopUp()
+{
+    CoordMode("Mouse", "Client");
+    CoordMode("Pixel", "Client");
+    var mousePos = MouseGetPos();
+    var col = PixelGetColor(mousePos["OutputVarX"],mousePos["OutputVarY"], "RGB");
+
+    var colors = "0x42475E 0xE6E6E9 0x3C4052 0x404559 0x42475E 0xFFFFFF 0xDFDFDF 0x7F3D5E 0x583446 0x5D6174 0x747474 0x5B5F73";
+    return (colors.indexOf(""+col) &gt;= 0);
+}
+
+var oldt = TimeMS();
+function SendSafe(s)
+{
+var t = TimeMS();
+if(t&lt;oldt+100) 
+{
+//OutputDebug("Sending" + s);
+//return;
+}
+oldt = t;
+////////////////////////
+
+    var t = -1;
+    if(!isTimerVisible())
+    {
+       doScrolling = false;
+    
+       t = -50; //delay the other key, 50 is the bare minimum wait I found
+       SetTimer('Send("!s")', "-1");
+       
+    }
+  SetTimer('Send("' + s + '")', t);
+  return t &lt; -1;
+
+}
+
+function DoSentenceCommand(CommandsArray)
+{
+    //NOTE: AHK array goes from 1 to Length() Inclusive
+    //get the sentence array
+    var sentences_arr = HKS.Recognition.GetSentencesArray();
+    //Get last sentense which is at Index of Length()
+    var FinalSentenceInSeries = sentences_arr[sentences_arr.Length()];
+    //using associative array to remap, does not allow spaces in items so trim it
+    var noSpacesEntry = FinalSentenceInSeries.replace(/ /g,'');
+    //find the item in the commands array using what was said as named array index
+
+
+    var toSay = CommandsArray[noSpacesEntry];
+    //oops that for each is only for ECMAScript 5 and up. we use 3, so we add it
+    toSay.forEach = function(toCall) {for(var i = 0; i&lt;this.length; i++) {toCall(this[i]);}}
+    toSay.forEach(function(item){var t = SendSafe(item); Sleep(50 + t * 60);}); //sleep longer if !s was sent
+}
+
+function TimeMS()
+{
+    var d = new Date();
+    return d.getTime();
+}
+
+
+
+
+
+
+
+var lastTime = TimeMS();
+var lastType = "";
+function DoOverlayOrMenuCommand()
+{
+
+
+    try
+    {
+        if(TimeMS() &lt; lastTime + 200) return;
+        lastTime = TimeMS();
+        
+        var CommandsMap = {
+
+            Menu: "Menu",
+            Overlay: "Overlay",
+            Base: "Base",
+            Oxygen: "Oxygen",
+            Power: "Power",
+            Temperature:"Temp",
+            Materials:"Mat",
+            Lights:"Lights",
+            Plumbing: "Pipes",
+            Pipes: "Pipes",
+            WaterPipes: "Pipes",
+            Ventilation: "Vents",
+            Vents: "Vents",
+            AirDucts: "Vents",
+            Decor:"Decor",
+            Furniture:"Decor",
+            Refinements:"Refinements",
+            Medicine:"Germs",
+            Germs:"Germs",
+            Food: "Farm",
+            Foodstuff: "Farm",
+            Farming:"Farm",
+            Farm:"Farm",
+            Rooms:"Rooms",
+            ExoSuit:"ExoSuit",
+            SpaceSuit:"ExoSuit",
+            Automation:"Auto",
+            Shipping:"Ship",
+            Conveyor:"Ship",
+            Stations:"Stations",
+            Utilities:"Utilities",
+            DONE: "DONE"
+        };
+        var ActionsMap = { 
+            OverlayOxygen: ["{F1}"], 
+            OxygenOverlay: ["{F1}"], 
+            OverlayPower: ["{F2}"],
+            PowerOverlay: ["{F2}"],
+            OverlayTemp: ["{F3}"],
+            TempOverlay: ["{F3}"],
+            OverlayMat: ["{F4}"],
+            MatOverlay: ["{F4}"],
+            OverlayLights: ["{F5}"], 
+            LightsOverlay: ["{F5}"], 
+            OverlayPipes: ["{F6}"], 
+            PipesOverlay: ["{F6}"], 
+            OverlayVents: ["{F7}"], 
+            VentsOverlay: ["{F7}"], 
+            OverlayDecor: ["{F8}"],  
+            DecorOverlay: ["{F8}"],  
+            OverlayGerms: ["{F9}"],  
+            GermsOverlay: ["{F9}"],  
+            OverlayFarm: ["{F10}"],  
+            FarmOverlay: ["{F10}"],  
+            OverlayRooms: ["{F11}"],  
+            RoomsOverlay: ["{F11}"],  
+            OverlayExoSuit: ["{LShift Down}","{F1}","{LShift Up}"],  
+            ExoSuitOverlay: ["{LShift Down}","{F1}","{LShift Up}"],  
+            OverlayAuto: ["{LShift Down}","{F2}","{LShift Up}"],  
+            AutoOverlay: ["{LShift Down}","{F2}","{LShift Up}"],  
+            OverlayShip: ["{LShift Down}","{F3}","{LShift Up}"],  
+            ShipOverlay: ["{LShift Down}","{F3}","{LShift Up}"],  
+            
+
+            MenuBase: ["1"], 
+            BaseMenu: ["1"], 
+            MenuOxygen: ["2"], 
+            OxygenMenu: ["2"], 
+            MenuPower: ["3"], 
+            PowerMenu: ["3"], 
+            MenuFarm: ["4"], 
+            FarmMenu: ["4"], 
+            MenuPipes: ["5"], 
+            PipesMenu: ["5"], 
+            MenuVents: ["6"], 
+            VentsMenu: ["6"], 
+            MenuRefinements: ["7"], 
+            RefinementsMenu: ["7"], 
+            MenuGerms: ["8"], 
+            GermsMenu: ["8"], 
+            MenuDecor: ["9"], 
+            DecorMenu: ["9"], 
+            MenuStations : ["0"], 
+            StationsMenu: ["0"], 
+            MenuUtilities: ["-"],
+
+            UtilitiesMenu: [["-"]], 
+            MenuAuto: [["="]], 
+            AutoMenu: [["="]], 
+            MenuShip: [[""]], 
+            ShipMenu: [[""]], 
+
+
+            DONE:[""]
+        };
+
+        //get the sentence array
+        var sentences_arr = HKS.Recognition.GetSentencesArray();
+        if(sentences_arr.Length()&gt;0)
+        {
+            //NOTE: AHK array goes from 1 to Length() Inclusive
+//    OutputDebug("fuck you1");        
+            //map the 2 last sentences to entry in CommandsMap, trimming spaces
+            var s1 = sentences_arr[sentences_arr.Length()].replace(/ /g,'');
+//    OutputDebug("fuck you2");  
+            var s2;
+            if(sentences_arr.Length()&gt;1) s2 = sentences_arr[sentences_arr.Length()-1].replace(/ /g,'');
+//    OutputDebug("fuck you3");  
+            if(!s2)
+            {
+               s2 = lastType;
+            }
+            var LastCommand = CommandsMap[s1];
+            var PriorCommand = CommandsMap[s2];
+            var Last2Commands = PriorCommand+LastCommand;
+//    OutputDebug(s1 + s2 + " = = " + Last2Commands);
+            if(s1 == "Menu" || s1 == "Overlay") lastType = s1;
+            if(s2 == "Menu" || s2 == "Overlay") lastType = s2;
+    
+    
+    
+    
+    
+            //map the 2 sentences to an action in ActionsMap
+            var Actions = ActionsMap[Last2Commands];
+//    OutputDebug("Action = " + Actions[0]);
+            if(Actions)
+            {
+                //oops that for each is only for ECMAScript 5 and up. we use 3, so we add it
+                Actions.forEach = function(toCall) {for(var i = 0; i&lt;this.length; i++) {toCall(this[i]);}}
+                //and call it
+                Actions.forEach(function(item){var t = SendSafe(item); Sleep(50 + t * 60);}); //sleep longer if !s was sent
+            }
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+
+}
+
+//decode the spoken sentence and call the DoSentenceCommand functuon 
+//declared in the application node which will map the last sentence 
+//to a send keys
+function DecodeLayoutSentence()
+{
+
+    try //Try to do this...
+    {
+        var Options = { 1: ["1"], 
+                    Dig: ["1"], 
+
+                    2: ["2"], 
+                    Cancel: ["2"], 
+
+                    3: ["3"],
+                    Deconstruct: ["3"],
+                    Destroy: ["3"],
+
+                    4: ["4"],
+                    Priority: ["4"],
+                    Foodstuff: ["4"],
+
+                    5: ["5"],
+                    Plumbing: ["5"],
+                    Pipes: ["5"],
+                    WaterPipes: ["5"],
+
+                    6: ["6}"],
+                    Ventilation: ["6"],
+                    Vents: ["6"],
+                    AirDucts: ["6"],
+                    
+                    7: ["7"],
+                    Refinement: ["7"],
+                    Science: ["7"],
+
+                    8: ["8"],
+                    Medicine: ["8"],
+                    Germs: ["8"],
+
+                    9: ["9"],
+                    Decor: ["9"],
+                    Furniture: ["9"],
+
+                    0: ["0"],
+                    10: ["0"], 
+                    Stations:["0"],
+
+                    11: ["-"], 
+                    Utilities:["-"],
+
+                    12: ["="], 
+                    Automation:["="],
+
+                    13: ["1"], //has no hot key defined in game, make it do 1 
+                    Shipping:["1"],
+                    Conveyor:["1"],
+
+                    DONE:[""]};
+
+        DoSentenceCommand(Options);
+        
+    }
+    catch(e) //catch error
+    {
+    }
+}</Code><elements><element text="GlobalActions" type="5" grouptype="2" disabled="0"><elements><element text="Escape" type="3" grouptype="3" disabled="0"><SpeakText>Escape|Back</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+Send("{Esc}");
+
+
+
+
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="HyperSpeed" type="3" grouptype="3" disabled="0"><SpeakText>Hyper Speed</SpeakText><HotKeys>h</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        SendSafe("!z");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="MiddleClickPause" type="3" grouptype="3" disabled="0"><SpeakText>Stop|Pause</SpeakText><HotKeys>MButton</HotKeys><Code>SendSafe("{space}")</Code></element><element text="RightButtonFix" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>RButton</HotKeys><Code>/*
+If in a pop up window, make the right mouse move the window... 
+and dispatch the window only if the mouse is released at the same coord
+*/
+
+var SentLeft = false;
+//OutputDebug("RMouse");
+
+
+function SamePos(p1,p2)
+{
+    return (p1["OutputVarX"] == p2["OutputVarX"] &amp;&amp; 
+            p1["OutputVarY"] == p2["OutputVarY"]);
+}
+
+
+if(isMouseOverPopUp())
+{
+    var pos = MouseGetPos();
+    //OutputDebug("RIGHT MOUSE");
+    //OutputDebug(pos);
+    while(""+GetKeyState("RButton" , "P") == "1")
+    {
+        var pos2 = MouseGetPos();
+        if(!SamePos(pos,pos2) &amp;&amp; !SentLeft)
+        {
+            SentLeft = true;
+            Send("{LButton Down}");
+            //OutputDebug("Send Left Down")
+        }
+    };
+    if(SentLeft)
+    {
+        Send("{LButton Up}");
+        SentLeft = false;
+        //OutputDebug("Send Left Up")
+    }
+    else
+    {
+        Send("{RButton}")
+        //OutputDebug("Mouse");
+    }
+}
+else
+{
+    Send("{RButton Down}")
+    while(""+GetKeyState("RButton" , "P") == "1");
+    SendSafe("{RButton Up}")
+}</Code></element><element text="Rotate" type="3" grouptype="3" disabled="0"><SpeakText>Rotate</SpeakText><HotKeys>r</HotKeys><Code>//calling function as it's being declared
+SendSafe("o"); //who the fuck defines rotate as o anyway</Code></element><element text="SilenceWordSet" type="3" grouptype="3" disabled="0"><SpeakText>fuck|wah|fuh|mah|muff|wing</SpeakText><HotKeys></HotKeys><Code>/*
+
+a list of words that you use when expressing frustration... or joy
+and orthers that resemble noise. such as breathing into the mic...
+
+
+The point is to handle words and noises the system may confuse with valid commands
+
+so this list is always specific to an application... to handle noise that may cause erroneous command execution...
+This gives a better "run to mama" (find the reference ;)) word to detect which basically move the noise away from 
+valid command towards a closer sounding word that does nothing...
+
+
+wing in this case detects that sha-wing sound the game makes which the mic picks up and thinks I said "Shipping"
+
+mah and muff is just to prevent "Menu" or "Mop" being detected when I breath into the mic, 
+I do the moohaf sound exhaling sometimes.... 
+I dont say muff out of frustration
+ it's just the closest english word that matches this
+
+
+
+*/</Code></element><element text="WheelDown" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>WheelDown</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(isTimerVisible() &amp;&amp; !isMouseOverPopUp())
+        {
+            Send("!s");
+
+            sameColCt = 4;
+            Sleep(500);
+            doScrolling=true;
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="WheelUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>WheelUp</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(isTimerVisible() &amp;&amp; !isMouseOverPopUp())
+        {
+            Send("!s");
+
+            sameColCt = 2;
+            doScrolling=true;
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="LeftAndTopRightMenu" type="4" grouptype="4" disabled="0"><SpeakText>Show</SpeakText><HotKeys></HotKeys><Code>//Set up to allow
+///Show Power Overlay/Show Overlay Power/Show Power Menu/Show Menu Power</Code><elements><element text="AllPossibleOverlaysAndMenusPart1" type="3" grouptype="3" disabled="0"><SpeakText>Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="AllPossibleOverlaysAndMenusPart2" type="3" grouptype="3" disabled="0"><SpeakText>Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="AllPossibleOverlaysAndMenusPart3" type="3" grouptype="3" disabled="0"><SpeakText>Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="Menu" type="3" grouptype="3" disabled="0"><SpeakText>Menu</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="Overlay" type="3" grouptype="3" disabled="0"><SpeakText>Overlay</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="RightTools" type="5" grouptype="2" disabled="0"><elements><element text="Attack" type="3" grouptype="3" disabled="0"><SpeakText>Kill that thing for food|Attack</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+SendSafe("t");</Code></element><element text="CancelTool" type="3" grouptype="3" disabled="0"><SpeakText>Cancel|Cancel Tool</SpeakText><HotKeys></HotKeys><Code>SendSafe("c");</Code></element><element text="Capture" type="3" grouptype="3" disabled="0"><SpeakText>Capture|Wrangle</SpeakText><HotKeys></HotKeys><Code>SendSafe("n");</Code></element><element text="Deconstruct" type="3" grouptype="3" disabled="0"><SpeakText>Deconstruct|Delete|Destroy</SpeakText><HotKeys></HotKeys><Code>SendSafe("x");</Code></element><element text="Dig" type="3" grouptype="3" disabled="0"><SpeakText>Griff|Dig|Shovel|Mine</SpeakText><HotKeys></HotKeys><Code>SendSafe("g");</Code></element><element text="Disinfect" type="3" grouptype="3" disabled="0"><SpeakText>Disinfect|Clean</SpeakText><HotKeys></HotKeys><Code>SendSafe("i");</Code></element><element text="EmptyPipe" type="3" grouptype="3" disabled="0"><SpeakText>Empty Pipe</SpeakText><HotKeys></HotKeys><Code>SendSafe("{insert}");</Code></element><element text="Harvest" type="3" grouptype="3" disabled="0"><SpeakText>Harvest</SpeakText><HotKeys></HotKeys><Code>SendSafe("y");</Code></element><element text="Mop" type="3" grouptype="3" disabled="0"><SpeakText>Mop</SpeakText><HotKeys></HotKeys><Code>SendSafe("m");</Code></element><element text="PickUp" type="3" grouptype="3" disabled="0"><SpeakText>Pick Up</SpeakText><HotKeys></HotKeys><Code>SendSafe("k");</Code></element><element text="SetPriority" type="4" grouptype="4" disabled="0"><SpeakText>Set Priority|Set Urgency|Prioritize|Priority|Priorities|Priory</SpeakText><HotKeys></HotKeys><Code>SendSafe("p");</Code><elements><element text="Priorities" type="3" grouptype="3" disabled="0"><SpeakText>1|2|3|4|5|6|7|8|9|0|Zero|Urgent</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        var Options = { 1: [1], 
+                    2: [2],
+                    3: [3],
+                    4: [4],
+                    5: [5],
+                    6: [6],
+                    7: [7],
+                    8: [8],
+                    9: [9],
+                    0: [0],
+                    Zero: [0],
+                    Urgent: [0],
+                    DONE: [""]    
+                    };
+
+        DoSentenceCommand(Options);
+        
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element></elements></element></elements></element></elements>

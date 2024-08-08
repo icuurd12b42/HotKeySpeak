@@ -1,0 +1,1112 @@
+<elements><element text="Applications and Games" type="1" grouptype="1" disabled=""><elements><element text="_Code" type="5" grouptype="1" disabled="0"><elements><element text="notepad.exe" type="2" grouptype="2" disabled="0" path="C:\Windows\System32\notepad.exe" appname="Notepad"><Code>OutputDebug("hello")</Code><elements><element text="LongPress" type="3" grouptype="3" disabled="0"><SpeakText>Show how to do Long Press and Tap in one Keymap</SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
+    var delay = 200;
+    try //Try to do this...
+    {
+        var d1 = new Date();
+        while(""+GetKeyState("XButton2" , "P") == "1")
+        {
+          Sleep(10);
+        }
+        var d2 = new Date();
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &gt; delay)
+        {
+            Send("Long Press{Enter}");
+        }
+        else
+        {
+            Send("Tap{Enter}");
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+})();</Code></element></elements></element></elements></element><element text="brave.exe" type="2" grouptype="2" disabled="0" path="C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" appname="Brave"><Code></Code><elements><element text="BackAndPgUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
+    var delay = 200;
+    try //Try to do this...
+    {
+        var d1 = new Date();
+        while(""+GetKeyState("XButton2" , "P") == "1")
+        {
+          Sleep(10);
+        }
+        var d2 = new Date();
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &gt; delay)
+        {
+            //Send("Long Press{Enter}");
+            Send("!{Left}");
+        }
+        else
+        {
+            //Send("Tap{Enter}");
+            Send("{PgUp}");
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+})();</Code></element><element text="ForwardAndPgDn" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>(function() {
+    var delay = 200;
+    try //Try to do this...
+    {
+        var d1 = new Date();
+        while(""+GetKeyState("XButton1" , "P") == "1")
+        {
+          Sleep(10);
+        }
+        var d2 = new Date();
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &gt; delay)
+        {
+            //Send("Long Press{Enter}");
+            Send("!{Right}");
+        }
+        else
+        {
+            //Send("Tap{Enter}");
+            Send("{PgDn}");   
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+})();</Code></element><element text="HardRefreshAlways" type="3" grouptype="3" disabled="0"><SpeakText>Reload|Refresh</SpeakText><HotKeys>F5</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        Send("^{F5}");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="Cities.exe" type="2" grouptype="2" disabled="0" path="E:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities.exe" appname="Cities: Skylines"><Code>function SamePos(p1,p2)
+{
+    return vectdist(p1,p2)
+&gt;4;
+    //return (p1["OutputVarX"] == p2["OutputVarX"] &amp;&amp; 
+    //        p1["OutputVarY"] == p2["OutputVarY"]);
+}
+
+//and if the color distance between the 2 is close enough..
+function vectdist(a,b)
+{
+   var dx = a[0] - b[0]; 
+   var dy = a[1] - b[1]; 
+   var dz = a[2] - b[2];
+   dx*=dx;
+   dy*=dy;
+   dz*=dz;
+   return Math.sqrt(dx+dy+dz);
+}</Code><elements><element text="Cancel" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>Send("{Esc}");</Code></element><element text="Pause" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>MButton</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        var pos1 = MouseGetPos();
+        Send ("{MButton Down}");
+        while(""+GetKeyState("MButton" , "P") == "1")
+        {
+            var pos2 = MouseGetPos();
+            
+        }
+        Send ("{MButton Up}");
+//OutputDebug("Up");
+        if(SamePos(pos1,pos2))
+        {
+            Send(" ");
+            //OutputDebug("Send Left Down");
+        }
+        
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="PauseX" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>Send("{space down}");
+Sleep(100);
+Send("{space up}");</Code></element><element text="RightMouse" type="3" grouptype="3" disabled="1"><SpeakText></SpeakText><HotKeys>RButton</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        Send("{RButton Down}");
+        //get mouse pos as a vector
+        var p1 = posOutputsToVec2(MouseGetPos()); //"OutputVarX/Y" -&gt; {x,y}
+        var pStart = p1;
+        var p2;
+        var rightVector = {x:1, y:0}; //facing right vector
+        //while dragging
+        while(""+GetKeyState("RButton" , "P") == "1")
+        {
+            //get new pos as vector
+            p2 = posOutputsToVec2(MouseGetPos());
+
+            if(!SamePos(p1,p2))
+            {
+    
+    
+            //OutputDebug("p2 "+p2.x + "," + p2.y);
+                //converted as a diretional vector
+                var vec = vectorFromP1P2(p1,p2);
+                //OutputDebug("vec "+vec.x + "," + vec.y);
+                //normalized so de can 
+                var nvec = normalize(vec);
+                //OutputDebug("nvec "+nvec.x + "," + nvec.y);
+                //all that to get the angle from down to drag
+                var deg = v2Angle(vec);
+                //OutputDebug("deg  "+deg); 
+                //so we can convert to 0,1,2,3,4,5,6,7... 8 directions with 0 being right, then clockwize to 7           
+                //var seg = angle2Segment(deg,8);
+                //var Commands = ["a", "aw", "w", "wd", "d", "sd", "s", "as"]; //8 directions instruction
+
+                //so we can convert to 0,1,2,3 directions with 0 being right, then clockwize to 3           
+                var seg = angle2Segment(deg,8);
+                OutputDebug("seg  "+seg); 
+                //var Commands = ["a", "w", "d", "s"]; //4 directions instruction
+                //var Commands = ["a", "aw", "w", "wd", "d","ds", "s", "sa"]; //8 directions instruction
+                var Commands = ["{a down}", "{a down}{w down}", "{w down}", "{w down}{d down}", "{d down}","{d down}{s down}", "{s down}", "{s down}{a down}"]; //8 directions instruction
+                var Command = Commands[seg];
+                //OutputDebug("Command  "+Command);
+                //SetTimer("Send('" + Command + "');",-10);
+                //Send(Command);
+//p1 = p2;
+            }    
+           
+        }
+//Send("{a up}{a up}{w up}{w up}{w up}{d up}{d up}{d up}{s up}{s up}{s up}{a up}");
+
+Send("{RButton Up}")
+        if(SamePos(pStart,p2))
+        {
+            Send("{esc}");
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+function vect2arr(v)
+{
+   return [v.x,v.y]
+;
+
+}
+
+function v2Angle(v){
+    var angle = Math.atan2(v.y, v.x);   //radians
+    // you need to devide by PI, and MULTIPLY by 180:
+    var degrees = 180*angle/Math.PI;  //degrees
+    return (360+Math.round(degrees))%360;
+}
+
+function angle2Segment(a, numsegments)
+{
+    var correctedA = ((a+360/numsegments/2) + 360) % 360;
+    return Math.floor(correctedA/360 * numsegments);
+}
+
+function normalize(v)
+{
+   
+   var d = Math.sqrt(v.x * v.x + v.y * v.y);
+   return {x: v.x/d, y: v.y/d};
+}
+function vlen(v)
+{
+   
+   
+   return Math.sqrt(v.x * v.x + v.y * v.y);
+}
+function posOutputsToVec2(p)
+{
+   return {x: p["OutputVarX"], y:p["OutputVarY"]};
+}
+
+function vectorFromP1P2(p1,p2)
+{
+   return {x: p2.x-p1.x, y: p2.y - p1.y};
+}
+//so we can use the dot product between the color we want and the one we got
+function dotproduct(a,b) {
+	var n = 0, lim = Math.min(a.length,b.length);
+	for (var i = 0; i &lt; lim; i++) n += a[i] * b[i];
+	return n;
+ }
+
+function SamePos(p1,p2)
+{
+    return (p1.x == p2.x &amp;&amp; 
+            p1.y == p2.y);
+}</Code></element></elements></element><element text="Cosmoteer.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\Cosmoteer.exe" appname="Cosmoteer"><Code></Code><elements><element text="EscAndSpeedUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
+    var delay = 200;
+    try //Try to do this...
+    {
+        var d1 = new Date();
+        while(""+GetKeyState("XButton2" , "P") == "1")
+        {
+          Sleep(10);
+        }
+        var d2 = new Date();
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &gt; delay)
+        {
+            //Send("Long Press{Enter}");
+            Send("{PgUp}")
+        }
+        else
+        {
+            //Send("Tap{Enter}");
+            Send("{Esc}")
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+})();</Code></element><element text="PauseAndSpeedDown" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>(function() {
+    var delay = 200;
+    try //Try to do this...
+    {
+        var d1 = new Date();
+        while(""+GetKeyState("XButton1" , "P") == "1")
+        {
+          Sleep(10);
+        }
+        var d2 = new Date();
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &gt; delay)
+        {
+            //Send("Long Press{Enter}");
+            Send("{PgDn}")
+        }
+        else
+        {
+            //Send("Tap{Enter}");
+            Send("{Space}")
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+})();</Code></element><element text="Repair" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>^F</HotKeys><Code>var dt =20;
+var wt = 60;
+var in_it = false;
+
+//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        while(KeyIsDown("F")){;}
+        //while(KeyIsDown("^")){;}
+        if(in_it) return;
+
+        in_it = true;
+        
+
+        Send("{F1}");
+        rep();
+        Send("{F2}");
+        rep();
+        Send("{F3}");
+        rep();
+Send("{F3}");
+        rep();
+        //double tap to focus ship(s), I reserve F8 for all ships
+        Send("{F8}");
+        Sleep(dt);
+        Send("{F8}");
+        Sleep(dt);
+
+        in_it = false;
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+
+
+
+
+
+
+function rep()
+{
+    Sleep(100);
+    Send("b");
+    Sleep(wt);
+    Send("^{enter}");
+    Sleep(wt);
+    Send("{escape}");
+    Sleep(wt);
+}</Code></element></elements></element><element text="FTLGame.exe" type="2" grouptype="2" disabled="0" path="E:\Program Files (x86)\Steam\steamapps\common\FTL Faster Than Light\FTLGame.exe" appname="FTL: Faster Than Light"><Code></Code><elements><element text="Esc" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>Send("{esc}", true)</Code></element><element text="Pause" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>Send("{space}", true)</Code></element></elements></element><element text="OxygenNotIncluded.exe" type="2" grouptype="2" disabled="0" path="C:\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded.exe" appname="Oxygen Not Included"><Code>/*
+///
+NOTE, all hot keys send are using my internal mapping in the game like R to rotate instead of O and maching 1,2,3 with f2 f3 f4...
+I tried to reset my "in game" keys to default but that is broken in the game domr oof the keys did not reset, 
+meaning it kept my redifined hot key, meaning Idesigne this using those...
+so you may have to edit the places where the keys are defined
+*/
+
+/*
+state
+This code hits alt+s to enable screen shoot mode when using the wheel
+to allow soming further out
+on zoom out, the olverlay is removed, turning on screen shot mode
+on zoom in the overlay is brought back to allow editing zoomed at any level
+*/
+
+var ResetAt = 0; //a tick is every 100 ms (not really accurate), How many ticks after a zoom is done before the overlay is enabled
+
+
+var oldCol = "";
+var sameColCt = 0; 
+var lastCornerCol = ToNCV("0x000000");
+var doScrolling = true;
+
+var LastAction = "";
+var LastTimeMS = 0;
+var TimeTalkEnds = TimeMS();
+
+//hex color is inverted from color mania app c++ color    
+var PopUpColors = "0x3C4152 0x303139 0x252A3B 0x181B26 0x2F34440  x303443 0x1F222B 0x484848 0xAFAFAF 0x1F222B 0x313543 0xE2C2D2 0xD3A4BC 0xE5E5E5 0xA1A3AE 0x42475E 0xE6E6E9 0x3C4052 0x404559 0x42475E 0xFFFFFF 0xDFDFDF 0x7F3D5E 0x583446 0x5D6174 0x747474 0x5B5F73";
+
+
+//The position of the timer color check at 100% 1080p, will perform tests from 75 to 200 step 5
+var TimerPos = [54,14];
+
+var scaleDetected = 0;
+//we are aiming for that red triangle
+var referenceTimerCol = ToNCV("0xF74D4A");  //hex 0xRRGGBB
+
+function isTimerVisible()
+{
+return true;
+    CoordMode("Pixel", "Client");
+    //var timerCol = PixelGetColor(p[0],p[1], "RGB");
+    //return (vectdist(timerCol, referenceTimerCol) &lt; .1);
+    if(scaleDetected != 0)
+    {
+        var p = TimerPos;
+        if(vectdist(ToNCV(PixelGetColor(p[0]*scaleDetected/100,p[1]*scaleDetected/100, "RGB")),referenceTimerCol) &lt;.1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    for(var i = 75; i&lt;=200; i+=5)
+    {
+        var p = TimerPos;
+//OutputDebug("Here: " + vectdist(ToNCV(PixelGetColor(p[0]*i/100,p[1]*i/100, "RGB")),referenceTimerCol));
+        if(vectdist(ToNCV(PixelGetColor(p[0]*i/100,p[1]*i/100, "RGB")),referenceTimerCol) &lt;.1)
+        {
+            scaleDetected = i;
+            return true;
+        }
+    }
+    return false;
+}
+//this function was used to restore the game state after a mouse wheel, it too clucky
+//and eventually I simply used the mouse wheel to oggle the edit mode back anyway
+
+
+function ToNCV(col)
+{
+  var c = "" + col;
+  var r = parseInt(c.substring(2,4), 16)/255;
+  var g = parseInt(c.substring(4,6), 16)/255;
+  var b = parseInt(c.substring(6,8), 16)/255;
+  var d = Math.sqrt(r*r+g*g+b*b);
+  if(d != 0)
+  {
+    r/=d;
+    g/=d;
+    b/=d;
+  }
+  return ([r,g,b]);
+}
+
+//and if the color distance between the 2 is close enough..
+function vectdist(a,b)
+{
+   var dx = a[0] - b[0]; 
+   var dy = a[1] - b[1]; 
+   var dz = a[2] - b[2];
+   dx*=dx;
+   dy*=dy;
+   dz*=dz;
+   return Math.sqrt(dx+dy+dz);
+}
+
+
+function isMouseOverPopUp()
+{
+    CoordMode("Mouse", "Client");
+    CoordMode("Pixel", "Client");
+
+    var mousePos = MouseGetPos();
+    var col = PixelGetColor(mousePos["OutputVarX"],mousePos["OutputVarY"], "RGB");
+
+    return (PopUpColors.indexOf(""+col) &gt;= 0);
+}
+
+
+
+
+
+
+
+var oldt = TimeMS();
+
+
+
+
+
+
+function SendSafe(s, AllowedWhileTalking)
+{
+    //OutputDebug("Is Talking? " + IsTalking());
+    if(IsTalking() &amp;&amp; AllowedWhileTalking != true) 
+    {   
+        return;
+    }    
+
+    var t = -1;
+//BlockInput("On");
+    if(!isTimerVisible() &amp;&amp; !isMouseOverPopUp())
+    {
+       doScrolling = false;
+    
+       //t = -50; //delay the other key, 50 is the bare minimum wait I found
+       //SetTimer('Send("!s")', "-1");
+       Send("!s");
+        Sleep(100)
+    }
+    //SetTimer('Send("' + s + '")', t);
+    Send(s);
+var ct = 0;
+while((ct&lt;50) &amp;&amp; ""+GetKeyState(s , "P") == "1") {ct++; Sleep(10);
+}
+
+//BlockInput("Off");
+    return t &lt; -1;
+
+}
+
+function DoSentenceCommand(CommandsArray)
+{
+    //NOTE: AHK array goes from 1 to Length() Inclusive
+    //get the sentence array
+    var sentences_arr = HKS.Recognition.GetSentencesArray();
+    //Get last sentense which is at Index of Length()
+    var FinalSentenceInSeries = sentences_arr[sentences_arr.Length()];
+    //using associative array to remap, does not allow spaces in items so trim it
+    var noSpacesEntry = FinalSentenceInSeries.replace(/ /g,'');
+    //find the item in the commands array using what was said as named array index
+
+
+    var toSay = CommandsArray[noSpacesEntry];
+    //oops that for each is only for ECMAScript 5 and up. we use 3, so we add it
+    toSay.forEach = function(toCall) {for(var i = 0; i&lt;this.length; i++) {toCall(this[i]);}}
+    toSay.forEach(function(item){var t = SendSafe(item); Sleep(50 + t * 60);}); //sleep longer if !s was sent
+}
+
+function TimeMS()
+{
+    var d = new Date();
+    return d.getTime();
+}
+
+
+
+
+
+
+
+var lastTime = TimeMS();
+var lastType = "";
+function DoOverlayOrMenuCommand()
+{
+
+
+    try
+    {
+        if(TimeMS() &lt; lastTime + 200) return;
+        lastTime = TimeMS();
+        
+        var CommandsMap = {
+
+            Menu: "Menu",
+            Overlay: "Overlay",
+            Base: "Base",
+            Oxygen: "Oxygen",
+            Power: "Power",
+            Temperature:"Temp",
+            Materials:"Mat",
+            Lights:"Lights",
+            Plumbing: "Pipes",
+            Pipes: "Pipes",
+            WaterPipes: "Pipes",
+            Ventilation: "Vents",
+            Vents: "Vents",
+            AirDucts: "Vents",
+            Decor:"Decor",
+            Furniture:"Decor",
+            Refinements:"Refinements",
+            Medicine:"Germs",
+            Germs:"Germs",
+            Food: "Farm",
+            Foodstuff: "Farm",
+            Farming:"Farm",
+            Farm:"Farm",
+            Rooms:"Rooms",
+            ExoSuit:"ExoSuit",
+            SpaceSuit:"ExoSuit",
+            Automation:"Auto",
+            Shipping:"Ship",
+            Conveyor:"Ship",
+            Stations:"Stations",
+            Utilities:"Utilities",
+            DONE: "DONE"
+        };
+        var ActionsMap = { 
+            OverlayOxygen: ["{F1}"], 
+            OxygenOverlay: ["{F1}"], 
+            OverlayPower: ["{F2}"],
+            PowerOverlay: ["{F2}"],
+            OverlayTemp: ["{F3}"],
+            TempOverlay: ["{F3}"],
+            OverlayMat: ["{F4}"],
+            MatOverlay: ["{F4}"],
+            OverlayLights: ["{F5}"], 
+            LightsOverlay: ["{F5}"], 
+            OverlayPipes: ["{F6}"], 
+            PipesOverlay: ["{F6}"], 
+            OverlayVents: ["{F7}"], 
+            VentsOverlay: ["{F7}"], 
+            OverlayDecor: ["{F8}"],  
+            DecorOverlay: ["{F8}"],  
+            OverlayGerms: ["{F9}"],  
+            GermsOverlay: ["{F9}"],  
+            OverlayFarm: ["{F10}"],  
+            FarmOverlay: ["{F10}"],  
+            OverlayRooms: ["{F11}"],  
+            RoomsOverlay: ["{F11}"],  
+            OverlayExoSuit: ["{LShift Down}","{F1}","{LShift Up}"],  
+            ExoSuitOverlay: ["{LShift Down}","{F1}","{LShift Up}"],  
+            OverlayAuto: ["{LShift Down}","{F2}","{LShift Up}"],  
+            AutoOverlay: ["{LShift Down}","{F2}","{LShift Up}"],  
+            OverlayShip: ["{LShift Down}","{F3}","{LShift Up}"],  
+            ShipOverlay: ["{LShift Down}","{F3}","{LShift Up}"],  
+            
+
+            MenuBase: ["{vk31}"], 
+            BaseMenu: ["{vk31}"], 
+            MenuOxygen: ["2"], 
+            OxygenMenu: ["2"], 
+            MenuPower: ["3"], 
+            PowerMenu: ["3"], 
+            MenuFarm: ["4"], 
+            FarmMenu: ["4"], 
+            MenuPipes: ["5"], 
+            PipesMenu: ["5"], 
+            MenuVents: ["6"], 
+            VentsMenu: ["6"], 
+            MenuRefinements: ["7"], 
+            RefinementsMenu: ["7"], 
+            MenuGerms: ["8"], 
+            GermsMenu: ["8"], 
+            MenuDecor: ["9"], 
+            DecorMenu: ["9"], 
+            MenuStations : ["0"], 
+            StationsMenu: ["0"], 
+            MenuUtilities: ["-"],
+
+            UtilitiesMenu: ["-"], 
+            MenuAuto: ["{vkBB}"], 
+            AutoMenu: ["{vkBB}"], 
+            MenuShip: [""], 
+            ShipMenu: [""], 
+
+
+            DONE:[""]
+        };
+
+        //get the sentence array
+        var sentences_arr = HKS.Recognition.GetSentencesArray();
+        if(sentences_arr.Length()&gt;0)
+        {
+            //NOTE: AHK array goes from 1 to Length() Inclusive
+//    OutputDebug("fuck you1");        
+            //map the 2 last sentences to entry in CommandsMap, trimming spaces
+            var s1 = sentences_arr[sentences_arr.Length()].replace(/ /g,'');
+//    OutputDebug("fuck you2");  
+            var s2;
+            if(sentences_arr.Length()&gt;1) s2 = sentences_arr[sentences_arr.Length()-1].replace(/ /g,'');
+//    OutputDebug("fuck you3");  
+            if(!s2)
+            {
+               s2 = lastType;
+            }
+            var LastCommand = CommandsMap[s1];
+            var PriorCommand = CommandsMap[s2];
+            var Last2Commands = PriorCommand+LastCommand;
+
+            if( LastAction == LastAction &amp;&amp; TimeMS() &lt; LastTimeMS+500) return;
+            if(s1 == "Menu" || s1 == "Overlay") lastType = s1;
+            if(s2 == "Menu" || s2 == "Overlay") lastType = s2;
+    
+    
+    
+    
+    
+            //map the 2 sentences to an action in ActionsMap
+            var Actions = ActionsMap[Last2Commands];
+//    OutputDebug("Action = " + Actions[0]);
+            if(Actions)
+            {
+                //oops that for each is only for ECMAScript 5 and up. we use 3, so we add it
+                Actions.forEach = function(toCall) {for(var i = 0; i&lt;this.length; i++) {toCall(this[i]);}}
+                //and call it
+                Actions.forEach(function(item){var t = SendSafe(item); Sleep(50 + t * 60);}); //sleep longer if !s was sent
+LastTimeMS = TimeMS();
+LastAction = Last2Commands;
+            }
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+
+}
+
+//decode the spoken sentence and call the DoSentenceCommand functuon 
+//declared in the application node which will map the last sentence 
+//to a send keys
+function DecodeLayoutSentence()
+{
+
+    try //Try to do this...
+    {
+        var Options = { 1: ["1"], 
+                    Dig: ["1"], 
+
+                    2: ["2"], 
+                    Cancel: ["2"], 
+
+                    3: ["3"],
+                    Deconstruct: ["3"],
+                    Destroy: ["3"],
+
+                    4: ["4"],
+                    Priority: ["4"],
+                    Foodstuff: ["4"],
+
+                    5: ["5"],
+                    Plumbing: ["5"],
+                    Pipes: ["5"],
+                    WaterPipes: ["5"],
+
+                    6: ["6}"],
+                    Ventilation: ["6"],
+                    Vents: ["6"],
+                    AirDucts: ["6"],
+                    
+                    7: ["7"],
+                    Refinement: ["7"],
+                    Science: ["7"],
+
+                    8: ["8"],
+                    Medicine: ["8"],
+                    Germs: ["8"],
+
+                    9: ["9"],
+                    Decor: ["9"],
+                    Furniture: ["9"],
+
+                    0: ["0"],
+                    10: ["0"], 
+                    Stations:["0"],
+
+                    11: ["-"], 
+                    Utilities:["-"],
+
+                    12: ["="], 
+                    Automation:["="],
+
+                    13: ["1"], //has no hot key defined in game, make it do 1 
+                    Shipping:["1"],
+                    Conveyor:["1"],
+
+                    DONE:[""]};
+
+        DoSentenceCommand(Options);
+        
+    }
+    catch(e) //catch error
+    {
+    }
+}
+
+
+
+function IsTalking()
+{
+    return (TimeTalkEnds&gt;TimeMS());
+}
+function StartTalking()
+{
+    TimeTalkEnds = TimeMS()+ 1500;
+}</Code><elements><element text="GlobalActions" type="5" grouptype="2" disabled="0"><elements><element text="CopySettings" type="3" grouptype="3" disabled="0"><SpeakText>Copy Settings</SpeakText><HotKeys></HotKeys><Code>if(!IsTalking()) Send('\\');</Code></element><element text="DebugMode" type="3" grouptype="3" disabled="0"><SpeakText>Debug Mode</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(!IsTalking()) Send("{BACKSPACE}");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="Esc" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>Send("{Esc}");</Code></element><element text="Escape" type="3" grouptype="3" disabled="0"><SpeakText>Escape|Back</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(!IsTalking())
+             Send("{Esc}");
+
+
+
+
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="HyperSpeed" type="3" grouptype="3" disabled="0"><SpeakText>Hyper Speed</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(!IsTalking()) Send("!z"); 
+   Send("h"); 
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="MButton" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>MButton</HotKeys><Code>/*
+If in a pop up window, make the right mouse move the window... 
+and dispatch the window only if the mouse is released at the same coord
+*/
+
+
+
+
+
+    Send("{RButton Down}")
+    while(""+GetKeyState("MButton" , "P") == "1");
+    SendSafe("{RButton Up}", true)</Code></element><element text="Pause" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>Send("{space}");
+//SendSafe("{space}", true)</Code></element><element text="RButton" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>RButton</HotKeys><Code>Send("o");
+/*
+If in a pop up window, make the right mouse move the window... 
+and dispatch the window only if the mouse is released at the same coord
+*/
+/*
+
+var SentLeft = false;
+//OutputDebug("RMouse");
+
+
+function SamePos(p1,p2)
+{
+    return (p1["OutputVarX"] == p2["OutputVarX"] &amp;&amp; 
+            p1["OutputVarY"] == p2["OutputVarY"]);
+}
+
+
+if(isMouseOverPopUp())
+{
+    var pos = MouseGetPos();
+    //OutputDebug("RIGHT MOUSE");
+    //OutputDebug(pos);
+    while(""+GetKeyState("RButton" , "P") == "1")
+    {
+        var pos2 = MouseGetPos();
+        if(!SamePos(pos,pos2) &amp;&amp; !SentLeft)
+        {
+            SentLeft = true;
+            Send("{LButton Down}");
+            //OutputDebug("Send Left Down")
+        }
+        Sleep(100);
+    };
+    if(SentLeft)
+    {
+        Send("{LButton Up}");
+        SentLeft = false;
+        //OutputDebug("Send Left Up")
+    }
+    else
+    {
+        Send("{RButton}")
+        Send("{Esc}")
+        //OutputDebug("Mouse");
+    }
+}
+else
+{
+    Send("{RButton Down}")
+    while(""+GetKeyState("RButton" , "P") == "1");
+    SendSafe("{RButton Up}", true)
+}
+*/</Code></element><element text="Rotate" type="3" grouptype="3" disabled="0"><SpeakText>Rotate</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+SendSafe("o"); //who the fuck defines rotate as o anyway</Code></element><element text="Sandbox" type="3" grouptype="3" disabled="0"><SpeakText>Sandbox Mode</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        Send("+s");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="Speed" type="3" grouptype="3" disabled="0"><SpeakText>Speed</SpeakText><HotKeys></HotKeys><Code>SendSafe("{Tab}");</Code></element><element text="WheelDown" type="3" grouptype="3" disabled="1"><SpeakText>WheelDown is the hot key</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(isTimerVisible() &amp;&amp; !isMouseOverPopUp())
+        {
+
+            //Send("!s");
+Send("lbutton");
+            ///sameColCt = 4;
+            //Sleep(100);
+            //doScrolling=true;
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="WheelUp" type="3" grouptype="3" disabled="1"><SpeakText>WheelUp is the hot key</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        if(isTimerVisible() &amp;&amp; !isMouseOverPopUp())
+        {
+            Send("!s");
+
+            sameColCt = 2;
+            doScrolling=true;
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="LeftAndTopRightMenu" type="4" grouptype="4" disabled="0"><SpeakText>Show</SpeakText><HotKeys></HotKeys><Code>//Set up to allow
+///Show Power Overlay/Show Overlay Power/Show Power Menu/Show Menu Power</Code><elements><element text="AllPossibleOverlaysAndMenusPart1" type="3" grouptype="3" disabled="0"><SpeakText>Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="AllPossibleOverlaysAndMenusPart2" type="3" grouptype="3" disabled="0"><SpeakText>Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="AllPossibleOverlaysAndMenusPart3" type="3" grouptype="3" disabled="0"><SpeakText>Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+//Part1:Oxygen|Materials|Lights|Plumbing|Pipes|WaterPipes|Ventilation|Vents|AirDucts
+//Part2:Decor|Refinements|Medicine|Germs|Food|Foodstuff|Farming|Farm|Rooms|ExoSuit|Automation
+//Part3:Power|Temperature|Base|Refinments|Furniture|Stations|Utilities||Shipping|Conveyor</Code></element><element text="Menu" type="3" grouptype="3" disabled="0"><SpeakText>Menu</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="Overlay" type="3" grouptype="3" disabled="0"><SpeakText>Overlay</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        DoOverlayOrMenuCommand();
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="RightTools" type="5" grouptype="2" disabled="0"><elements><element text="Attack" type="3" grouptype="3" disabled="0"><SpeakText>Kill that thing for food|Attack</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+SendSafe("t");</Code></element><element text="BuildThat" type="3" grouptype="3" disabled="0"><SpeakText>Build That|Copy That</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        //calling function as it's being declared
+SendSafe("b");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="CancelTool" type="3" grouptype="3" disabled="0"><SpeakText>Cancel|Cancel Tool</SpeakText><HotKeys></HotKeys><Code>SendSafe("c");</Code></element><element text="Capture" type="3" grouptype="3" disabled="0"><SpeakText>Capture|Wrangle</SpeakText><HotKeys></HotKeys><Code>SendSafe("n");</Code></element><element text="Deconstruct" type="3" grouptype="3" disabled="0"><SpeakText>Deconstruct|Delete|Destroy</SpeakText><HotKeys></HotKeys><Code>SendSafe("x");</Code></element><element text="Dig" type="3" grouptype="3" disabled="0"><SpeakText>Griff|Dig|Shovel|Mine</SpeakText><HotKeys></HotKeys><Code>SendSafe("g");</Code></element><element text="Disinfect" type="3" grouptype="3" disabled="0"><SpeakText>Disinfect|Clean</SpeakText><HotKeys></HotKeys><Code>SendSafe("i");</Code></element><element text="EmptyPipe" type="3" grouptype="3" disabled="0"><SpeakText>Empty Pipe|Drain Pipe</SpeakText><HotKeys></HotKeys><Code>SendSafe("{insert}");</Code></element><element text="Harvest" type="3" grouptype="3" disabled="0"><SpeakText>Harvest</SpeakText><HotKeys></HotKeys><Code>SendSafe("y");</Code></element><element text="Mop" type="3" grouptype="3" disabled="0"><SpeakText>Mop The Floor</SpeakText><HotKeys></HotKeys><Code>SendSafe("m");</Code></element><element text="PickUp" type="3" grouptype="3" disabled="0"><SpeakText>Pick Up The Stuff|Pick Up The Floor||Sweep The Floor</SpeakText><HotKeys></HotKeys><Code>SendSafe("k");</Code></element><element text="SetPriority" type="4" grouptype="4" disabled="0"><SpeakText>Set Priority|Set Urgency|Prioritize|Priority|Priorities|Priory</SpeakText><HotKeys></HotKeys><Code>SendSafe("p");</Code><elements><element text="Priorities" type="3" grouptype="3" disabled="0"><SpeakText>1|2|3|4|5|6|7|8|9|0|Zero|Urgent</SpeakText><HotKeys></HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        var Options = { 1: [1], 
+                    2: [2],
+                    3: [3],
+                    4: [4],
+                    5: [5],
+                    6: [6],
+                    7: [7],
+                    8: [8],
+                    9: [9],
+                    0: [0],
+                    Zero: [0],
+                    Urgent: [0],
+                    DONE: [""]    
+                    };
+
+        DoSentenceCommand(Options);
+        
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element></elements></element><element text="SilenceSetAndTalking" type="5" grouptype="2" disabled="0"><elements><element text="SilenceWordSet" type="3" grouptype="3" disabled="0"><SpeakText>Sent|Pot|Shot|Pop|tough|cat|She's|She|Hum|Was|Wash|Wing|Wu|Lieu|...|</SpeakText><HotKeys></HotKeys><Code>/*
+"..." is apparent a valid silent word... I just found out, it is sometimes chosen for brething in mic.
+
+Contains a list of words that the system may confuse with actual commands while you talk freely.
+
+As the system tries its best to match a word/sentence to the strict action list allowed for this app, 
+to perform better (faster)... 
+
+...talking freely may cause words that sound similar to words defined as actions...
+
+...Even coughing, breathing in the mic and the occasional snort may map the an action, 
+causing unwanted action to perform.
+
+In principle you want to give the opportunity for the system to find a 
+better matching word than an actual command in the action list. 
+
+The code below can be added to the notepad application to figure out
+
+This list is tailored to you and your environment and also to the application itself since
+you only want word that sound like the words in the actions specified... for example
+
+you have "Four" as action and you say "More" while talking...
+
+This code can be added to Notepad to find what the system thinks it hears while you make noise.
+
+*/
+/*
+
+//Use notepad and call Start Dictating and see what sort of words the system thinks you said
+//while you do some noises.
+
+
+function SendSentence(s)
+{
+    SetBuiltInVar("clipboard", s);
+    Send("^v");
+}
+
+BlockInput("ON")
+Send("{End}")
+Send("+{Home}")
+
+Sleep(100.0);
+
+SendSentence("Wait 3 seconds and then Dictate");
+Sleep(100);
+Send("+{Home}")
+BlockInput("OFF")  
+
+
+HKS.Recognition.StartDictating("OnDictate()")
+function OnDictate()
+{
+    BlockInput("ON")
+    Send("{End}")
+    Send("+{Home}")
+    SendSentence(HKS.Recognition.GetDictationText());
+    Send("+{Home}")
+    Sleep(100);
+
+    //done?
+    if(HKS.Recognition.IsDictating() == 0) 
+    {
+        Send("{End}");
+        //done, send enter
+        //Send("{Enter}")
+    }
+    BlockInput("OFF")   
+}
+
+
+*/</Code></element><element text="TalkStart" type="3" grouptype="3" disabled="0"><SpeakText>Ok|So|But|However|Alright|The|Be|And|Of|In|To|Have|It|I|That|For|With|What|On|Do|Say|They|At|From</SpeakText><HotKeys>Alt</HotKeys><Code>//We turn off performing actions when detecting one of the most common spoken words
+
+//New way simply sets a "dont do it" flag, a timer actually, that will prevent sending 
+//keys while the flag is set... The flag will reset when an ammount of time has elapsed 
+//without hearing any of these word.
+ 
+
+
+
+StartTalking();
+
+///Old way
+///I forgot that switching to dictating took 3 seconds so that method was poor 
+/*
+//Use notepad and call Start Dictating and see what sort of words the system thinks you said
+//while you do some noises.
+function SendSentence(s)
+{
+    //SetBuiltInVar("clipboard", s);
+    //Send("^v");
+    OutputDebug(s);
+}
+
+HKS.Recognition.StartDictating("OnDictate()")
+Sleep(5000);
+
+function OnDictate()
+{
+   
+    SendSentence(HKS.Recognition.GetDictationText());
+    
+    //done?
+    if(HKS.Recognition.IsDictating() == 0) 
+    {
+    }
+    
+
+}
+*/</Code></element></elements></element></elements></element><element text="ApplicationFrameHost.exe" type="2" grouptype="2" disabled="0" path="ApplicationFrameHost.exe" appname="Windows Apps"><Code></Code><elements><element text="" type="6" grouptype="6" disabled="0"><Title>Alarms &amp; Clock</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Calendar" type="6" grouptype="6" disabled="0"><Title>Calendar</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Mail" type="6" grouptype="6" disabled="0"><Title>Mail</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element></elements></element></elements></element></elements>
