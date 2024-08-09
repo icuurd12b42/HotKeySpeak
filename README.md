@@ -66,6 +66,6 @@ Sometime the program quits, possibly a internal erro
 
 It's possible the program can crash the monitored application, use at own risk.
 
-
+The Context Help for selected text does not work sometimes. you have to click the Keyword in the treeview, then scroll up to the branch node and click it to load the right panel, then go back and click the treview item you wanted help about.
 
 
