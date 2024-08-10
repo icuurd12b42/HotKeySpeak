@@ -8,7 +8,7 @@ Hot Key Speak is a AutoHotKey based system that allows defining JavaScript Comma
 4. Window Context Nodes, Context Node and Groups allows to structure a context tree for the macros.
 5. Written in AHK though the scripting language used for programming actions is JavaScript (ECMA3!! BE MINDFUL)
 6. Has a home brew code box for editing code*
-7. Has a "Edit With MS Code" integration
+7. The edit with external code editor option makes editing with MS Code a breeze, especially with autosave enabled.
 8. You can export and import parts of the command tree. !Make sure you trust the code the person shares with you!
 
 [Sneak Peak](https://icuurd12b42.github.io/HKSHelp/default.html?topic=MainUI)
