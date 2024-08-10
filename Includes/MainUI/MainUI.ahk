@@ -286,7 +286,7 @@ MainLink3()
 }
 MainLink4()
 {
-
+	run, https://github.com/icuurd12b42/HotKeySpeak/graphs/community
 }
 MainLink5()
 {
