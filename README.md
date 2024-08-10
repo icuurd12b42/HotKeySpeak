@@ -21,11 +21,24 @@ Hot Key Speak is a AutoHotKey based system that allows defining JavaScript Comma
 
 Install require components
 1. Copy the files and folder structure on your PC
-2. Install AutohotKey to run HotKeySpeak.ahk
-You must run (double click on) HotKeySpeak.ahk from the install folder to make AutoHotKey run the script with the install folder as working folder. It is best to make a exe out of the project. 
+2. Install AutoHotKey to run HotKeySpeak.ahk
+3. Right click Edit the HotKeySpeak.bat batch file
+4. Make sure the paths specified by the variables match your system for the AHK location and the project location
+5. Run the batch file.
 
+The batch file is there to make sure the program is run with the ansii 32 runner.
+It is best to make a exe so that the program can be pinned and have shortcuts...
 
-To make an exe
+### To make an exe
+The github project now includes the ansii32 compiled version as HotKeySpead.exe, you can compile it yourself.
+
+#### With the Batch File
+1) Right click Edit the full_compile.bat batch file
+2) Make sure the paths specified by the variables match your system for the AHK location and the project location
+3) Run the batch file.
+4) HotKeySpeak.exe will be created in the project folder
+
+#### Manual Steps
 1. Run AutohotKey's "Convert .ahk to .exe"
 4. Select <install_folder>\HotKeySpeak.ahk as source
 5. Select <install_folder>\HotKeySpeak.exe as destination
@@ -57,11 +70,9 @@ The Code box not longer does context sensitive help on highlighted keywords.
 
 If you navigate directly to the HotKeySpeak interface from an application that is monitored by the program, the program will still think it's in the program and will send command to itself
 
-It very old Javascipt engine, not all features are present. 
+It very old JavaScript engine, not all features are present. 
 
 Requires running with ahk 32bit.
-
-Full Compile Bat file was never completed.
 
 Sometime the program quits, possibly a internal error
 

@@ -35,9 +35,9 @@ Windows 10 Logo (c) Microsoft: https://commons.wikimedia.org/wiki/File:Windows_1
 To Fix: Hot key seems to trigger twice when it focuses on the the item first... ctrl+c in notepad pastes twice, ctrl+x cuts twice, econd cut is empty so a beep happens
 */
 #NoEnv
-;#SingleInstance IGNORE
-#SingleInstance, off
-#SingleInstance, on
+;Run forcing to close any existing instance first
+#SingleInstance FORCE
+
 #Warn ALL
 #Persistent
 SendMode Input 
