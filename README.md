@@ -47,7 +47,7 @@ The github project now includes the ansi-32 compiled version as HotKeySpead.exe,
 8. Hit Convert
 The exe can be run from any location, including a desktop or a pinned task bar shortcut
 
-First run will show the console with every tracing message in the app making it slow to boot. Go in the options to set the console reporting to "Coder Information"
+First run may show the console with every tracing message in the app making it slow to boot. Go in the options to set the console reporting to "Coder Information"
 
 
 
