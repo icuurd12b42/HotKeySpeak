@@ -1,89 +1,4 @@
-<elements><element text="Applications and Games" type="1" grouptype="1" disabled=""><elements><element text="_Code" type="5" grouptype="1" disabled="0"><elements><element text="notepad.exe" type="2" grouptype="2" disabled="0" path="C:\Windows\System32\notepad.exe" appname="Notepad"><Code>OutputDebug("hello")</Code><elements><element text="LongPress" type="3" grouptype="3" disabled="0"><SpeakText>Show how to do Long Press and Tap in one Keymap</SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
-    var delay = 200;
-    try //Try to do this...
-    {
-        var d1 = new Date();
-        while(""+GetKeyState("XButton2" , "P") == "1")
-        {
-          Sleep(10);
-        }
-        var d2 = new Date();
-        var dt = d2.getTime()-d1.getTime();
-        if(dt &gt; delay)
-        {
-            Send("Long Press{Enter}");
-        }
-        else
-        {
-            Send("Tap{Enter}");
-        }
-    }
-    catch(e) //catch error
-    {
-        
-    }
-})();</Code></element></elements></element></elements></element><element text="brave.exe" type="2" grouptype="2" disabled="0" path="C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" appname="Brave"><Code></Code><elements><element text="BackAndPgUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
-    var delay = 200;
-    try //Try to do this...
-    {
-        var d1 = new Date();
-        while(""+GetKeyState("XButton2" , "P") == "1")
-        {
-          Sleep(10);
-        }
-        var d2 = new Date();
-        var dt = d2.getTime()-d1.getTime();
-        if(dt &gt; delay)
-        {
-            //Send("Long Press{Enter}");
-            Send("!{Left}");
-        }
-        else
-        {
-            //Send("Tap{Enter}");
-            Send("{PgUp}");
-        }
-    }
-    catch(e) //catch error
-    {
-        
-    }
-})();</Code></element><element text="ForwardAndPgDn" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>(function() {
-    var delay = 200;
-    try //Try to do this...
-    {
-        var d1 = new Date();
-        while(""+GetKeyState("XButton1" , "P") == "1")
-        {
-          Sleep(10);
-        }
-        var d2 = new Date();
-        var dt = d2.getTime()-d1.getTime();
-        if(dt &gt; delay)
-        {
-            //Send("Long Press{Enter}");
-            Send("!{Right}");
-        }
-        else
-        {
-            //Send("Tap{Enter}");
-            Send("{PgDn}");   
-        }
-    }
-    catch(e) //catch error
-    {
-        
-    }
-})();</Code></element><element text="HardRefreshAlways" type="3" grouptype="3" disabled="0"><SpeakText>Reload|Refresh</SpeakText><HotKeys>F5</HotKeys><Code>//calling function as it's being declared
-(function() {
-    try //Try to do this...
-    {
-        Send("^{F5}");
-    }
-    catch(e) //catch error
-    {
-    }
-})();</Code></element></elements></element><element text="Cities.exe" type="2" grouptype="2" disabled="0" path="E:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities.exe" appname="Cities: Skylines"><Code>function SamePos(p1,p2)
+<elements><element text="Applications and Games" type="1" grouptype="1" disabled=""><elements><element text="_Code" type="5" grouptype="1" disabled="0"><elements><element text="_ToClean" type="5" grouptype="1" disabled="1"><elements><element text="Cities.exe" type="2" grouptype="2" disabled="0" path="E:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities.exe" appname="Cities: Skylines"><Code>function SamePos(p1,p2)
 {
     return vectdist(p1,p2)
 &gt;4;
@@ -240,110 +155,6 @@ function SamePos(p1,p2)
 {
     return (p1.x == p2.x &amp;&amp; 
             p1.y == p2.y);
-}</Code></element></elements></element><element text="Cosmoteer.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\Cosmoteer.exe" appname="Cosmoteer"><Code></Code><elements><element text="EscAndSpeedUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
-    var delay = 200;
-    try //Try to do this...
-    {
-        var d1 = new Date();
-        while(""+GetKeyState("XButton2" , "P") == "1")
-        {
-          Sleep(10);
-        }
-        var d2 = new Date();
-        var dt = d2.getTime()-d1.getTime();
-        if(dt &gt; delay)
-        {
-            //Send("Long Press{Enter}");
-            Send("{PgUp}")
-        }
-        else
-        {
-            //Send("Tap{Enter}");
-            Send("{Esc}")
-        }
-    }
-    catch(e) //catch error
-    {
-        
-    }
-})();</Code></element><element text="PauseAndSpeedDown" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>(function() {
-    var delay = 200;
-    try //Try to do this...
-    {
-        var d1 = new Date();
-        while(""+GetKeyState("XButton1" , "P") == "1")
-        {
-          Sleep(10);
-        }
-        var d2 = new Date();
-        var dt = d2.getTime()-d1.getTime();
-        if(dt &gt; delay)
-        {
-            //Send("Long Press{Enter}");
-            Send("{PgDn}")
-        }
-        else
-        {
-            //Send("Tap{Enter}");
-            Send("{Space}")
-        }
-    }
-    catch(e) //catch error
-    {
-        
-    }
-})();</Code></element><element text="Repair" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>^F</HotKeys><Code>var dt =20;
-var wt = 60;
-var in_it = false;
-
-//calling function as it's being declared
-(function() {
-    try //Try to do this...
-    {
-        while(KeyIsDown("F")){;}
-        //while(KeyIsDown("^")){;}
-        if(in_it) return;
-
-        in_it = true;
-        
-
-        Send("{F1}");
-        rep();
-        Send("{F2}");
-        rep();
-        Send("{F3}");
-        rep();
-Send("{F3}");
-        rep();
-        //double tap to focus ship(s), I reserve F8 for all ships
-        Send("{F8}");
-        Sleep(dt);
-        Send("{F8}");
-        Sleep(dt);
-
-        in_it = false;
-    }
-    catch(e) //catch error
-    {
-    }
-})();
-
-
-
-
-
-
-
-
-function rep()
-{
-    Sleep(100);
-    Send("b");
-    Sleep(wt);
-    Send("^{enter}");
-    Sleep(wt);
-    Send("{escape}");
-    Sleep(wt);
 }</Code></element></elements></element><element text="FTLGame.exe" type="2" grouptype="2" disabled="0" path="E:\Program Files (x86)\Steam\steamapps\common\FTL Faster Than Light\FTLGame.exe" appname="FTL: Faster Than Light"><Code></Code><elements><element text="Esc" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>Send("{esc}", true)</Code></element><element text="Pause" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>Send("{space}", true)</Code></element></elements></element><element text="OxygenNotIncluded.exe" type="2" grouptype="2" disabled="0" path="C:\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded.exe" appname="Oxygen Not Included"><Code>/*
 ///
 NOTE, all hot keys send are using my internal mapping in the game like R to rotate instead of O and maching 1,2,3 with f2 f3 f4...
@@ -1109,4 +920,302 @@ function OnDictate()
     
 
 }
-*/</Code></element></elements></element></elements></element><element text="ApplicationFrameHost.exe" type="2" grouptype="2" disabled="0" path="ApplicationFrameHost.exe" appname="Windows Apps"><Code></Code><elements><element text="" type="6" grouptype="6" disabled="0"><Title>Alarms &amp; Clock</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Calendar" type="6" grouptype="6" disabled="0"><Title>Calendar</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Mail" type="6" grouptype="6" disabled="0"><Title>Mail</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element></elements></element></elements></element></elements>
+*/</Code></element></elements></element></elements></element></elements></element><element text="Examples" type="5" grouptype="1" disabled="0"><elements><element text="notepad.exe" type="2" grouptype="2" disabled="0" path="C:\Windows\System32\notepad.exe" appname="Notepad"><Code>OutputDebug("In Notepad");</Code><elements><element text="Context1" type="4" grouptype="4" disabled="0"><SpeakText>Type The Sentence Here|Two if you need to</SpeakText><HotKeys></HotKeys><Code>GetBuiltInVar</Code></element><element text="TapOrLongPress" type="3" grouptype="3" disabled="0"><SpeakText>Show how to do Long Press and Tap in one Keymap</SpeakText><HotKeys>XButton2</HotKeys><Code>(function() {
+    OutputDebug("TapOrLongPress example");
+
+    //Tap or long press
+    if( TapOrLongPress(200,"XButton2") === "T")
+    {
+        //Tap
+        Send("Tap XButton2{Enter}");
+    }
+    else //"LP" or "" returned
+    {
+        //Long Press
+        Send("Long Press XButton2{Enter}");
+    }
+
+    //The function form is useful for shared application code
+    function TapOrLongPress(delay,key)
+    {
+        //This function returns T or LP based on passed delay and key or mouse button code
+        
+        //delay   the time in ms to hold long press
+        //key     the "key" or "mouse button" ...
+
+        try //Try to do this...
+        {
+            //Get the time at press
+            var d1 = new Date();
+            //while the key or button is still down
+            while(""+GetKeyState(key , "P") == "1")
+            {
+            Sleep(10);
+            }
+            //get the time at release
+            var d2 = new Date();
+            //Choose between the 2 macros based on delay value
+            var dt = d2.getTime()-d1.getTime();
+            if(dt &lt; delay)
+            {
+                OutputDebug("Tap " + key);
+                return "T";
+            }
+            else
+            {
+                OutputDebug("Long Press " + key)
+                return "LP";
+            }
+        }
+        catch(e) //catch error
+        {
+            
+        }
+        return ""; //this should never happen
+    }
+})();</Code></element><element text="WaitForRelease" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>(function() {
+    OutputDebug("WaitForRelease example");
+    
+    //Send a down on ANOTHER key. 
+    Send("{W Down}");
+    Send("{Space Down}");
+    //Wait for release
+    WaitForRelease("XButton1");
+    //Send a Release for that OTHER key. 
+    Send("{Space Up}");    
+    Send("{W Up}{Enter}");
+
+    //The function form is useful forghdgdgfd shared application code
+    function WaitForRelease(key)
+    {
+        //This function waits for the key to be released
+
+        //key     the "key" or "mouse button" ...
+
+        try //Try to do this...
+        {
+            //while the key or button is still down
+            OutputDebug("Hold " + key)
+            while(""+GetKeyState(key , "P") == "1")
+            {
+                Sleep(10);
+            }
+            OutputDebug("Released " + key)
+        }
+        catch(e) //catch error
+        {
+            
+        }
+    }
+})();</Code></element><element text="Window1" type="6" grouptype="6" disabled="0"><Title>*</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code>function</Code></element></elements></element></elements></element></elements></element><element text="Apps" type="5" grouptype="1" disabled="0"><elements><element text="brave.exe" type="2" grouptype="2" disabled="0" path="C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" appname="Brave"><Code>//Shared functions for this setup
+
+function TapOrLongPress(delay,key)
+{
+    //This function returns T or LP based on passed delay and key or mouse button code
+    
+    //delay   the time in ms to hold long press
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        //while the key or button is still down
+        while(""+GetKeyState(key , "P") == "1")
+        {
+        Sleep(10);
+        }
+        //get the time at release
+        var d2 = new Date();
+        //Choose between the 2 macros based on delay value
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &lt; delay)
+        {
+            OutputDebug("Tap " + key);
+            return "T";
+        }
+        else
+        {
+            OutputDebug("Long Press " + key)
+            return "LP";
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return ""; //this should never happen
+}</Code><elements><element text="BackAndPgUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton2") === "T")
+{
+    //Tap
+    Send("{PgUp}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("!{Left}");
+}</Code></element><element text="ForwardAndPgDn" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton1") === "T")
+{
+    //Tap
+    Send("{PgDn}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("!{Right}");
+}</Code></element><element text="HardRefreshAlways" type="3" grouptype="3" disabled="0"><SpeakText>Reload|Refresh</SpeakText><HotKeys>F5</HotKeys><Code>//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        Send("^{F5}");
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element></elements></element><element text="Games" type="5" grouptype="1" disabled="0"><elements><element text="Cosmoteer.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\Cosmoteer.exe" appname="Cosmoteer"><Code>//Shared functions for this setup
+
+function TapOrLongPress(delay,key)
+{
+    //This function returns T or LP based on passed delay and key or mouse button code
+
+    //delay   the time in ms to hold long press
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        //while the key or button is still down
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        //get the time at release
+        var d2 = new Date();
+        //Choose between the 2 macros based on delay value
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &lt; delay)
+        {
+            OutputDebug("Tap " + key);
+            return "T";
+        }
+        else
+        {
+            OutputDebug("Long Press " + key);
+            return "LP";
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return ""; //this should never happen
+}</Code><elements><element text="EscAndSpeedUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton1") === "T")
+{
+    //Tap
+    Send("{Esc}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("{PgUp}");
+}</Code></element><element text="PauseAndSpeedDown" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton1") === "T")
+{
+    //Tap
+    Send("{Space}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("{PgDn}");
+}</Code></element><element text="Repair" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>^F</HotKeys><Code>var dt =20;
+var wt = 60;
+var in_it = false;
+
+//calling function as it's being declared
+(function() {
+    try //Try to do this...
+    {
+        while(KeyIsDown("F")){;}
+        //while(KeyIsDown("^")){;}
+        if(in_it) return;
+
+        in_it = true;
+        
+
+        Send("{F1}");
+        rep();
+        Send("{F2}");
+        rep();
+        Send("{F3}");
+        rep();
+Send("{F3}");
+        rep();
+        //double tap to focus ship(s), I reserve F8 for all ships
+        Send("{F8}");
+        Sleep(dt);
+        Send("{F8}");
+        Sleep(dt);
+
+        in_it = false;
+    }
+    catch(e) //catch error
+    {
+    }
+})();
+
+
+
+
+
+
+
+
+function rep()
+{
+    Sleep(100);
+    Send("b");
+    Sleep(wt);
+    Send("^{enter}");
+    Sleep(wt);
+    Send("{escape}");
+    Sleep(wt);
+}</Code></element></elements></element><element text="domekeeper.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Dome Keeper\domekeeper.exe" appname="Dome Keeper"><Code>//Shared functions for this setup
+
+function WaitForRelease(key)
+{
+    //This function waits for the key to be released
+
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //while the key or button is still down
+        OutputDebug("Hold " + key)
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        OutputDebug("Released " + key)
+    }
+    catch(e) //catch error
+    {
+        
+    }
+}</Code><elements><element text="DropCancel" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>//Send a down on ANOTHER key. 
+Send("{Q Down}");
+//Wait for release
+WaitForRelease("XButton2");
+//Send a Release for that OTHER key. 
+Send("{Q Up}");</Code></element><element text="Use" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>//Send a down on ANOTHER key. 
+Send("{E Down}");
+Send("{Space Down}");
+//Wait for release
+WaitForRelease("XButton1");
+//Send a Release for that OTHER key. 
+Send("{Space Up}");
+Send("{E Up}");</Code></element></elements></element></elements></element><element text="ApplicationFrameHost.exe" type="2" grouptype="2" disabled="0" path="ApplicationFrameHost.exe" appname="Windows Apps"><Code></Code><elements><element text="" type="6" grouptype="6" disabled="0"><Title>Alarms &amp; Clock</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Calendar" type="6" grouptype="6" disabled="0"><Title>Calendar</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element><element text="Mail" type="6" grouptype="6" disabled="0"><Title>Mail</Title><ClassName>*</ClassName><ControlName>*</ControlName><ControlText>*</ControlText><Code></Code></element></elements></element></elements></element></elements>

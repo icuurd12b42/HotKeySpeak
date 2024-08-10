@@ -29,6 +29,12 @@ global hEditContextDialogRecordBut
 global EditContextDialogRecordingBut
 global hEditContextDialog_HotKeys_TextBox
 
+global EditContextDialog_SyntaxOnButton
+global hEditContextDialog_SyntaxOnButton
+global EditContextDialog_SyntaxOffButton
+global hEditContextDialog_SyntaxOffButton
+
+
 global EditContextDialog_Enabled
 
 Class EditContextDialog
@@ -149,6 +155,19 @@ Class EditContextDialog
 		Gui, Color,, %ButtonBackColor%
 		Gui, Font, c%ButtonFontColor% w%ButtonFontWeight% s%ButtonFontSize%, %ButtonFontName%
         
+		SyntaxOffIco := A_ScriptDir . "\Graphics\Icons\SyntaxOff.ico"
+		SyntaxOnIco := A_ScriptDir . "\Graphics\Icons\SyntaxOn.ico"
+		if(1 == gSyntaxHilighting)
+		{
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditContextDialog_SyntaxOffButton gEditContextDialog_SyntaxOffButton HWNDhEditContextDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditContextDialog_SyntaxOnButton gEditContextDialog_SyntaxOnButton HWNDhEditContextDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+		else
+		{
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditContextDialog_SyntaxOffButton gEditContextDialog_SyntaxOffButton HWNDhEditContextDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditContextDialog_SyntaxOnButton gEditContextDialog_SyntaxOnButton HWNDhEditContextDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+
 		RunIco := A_ScriptDir . "\Graphics\Icons\RunCode.ico"
 		Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditContextDialog_RunButton gEditContextDialog_RunButton HWNDhEditContextDialog_RunButton, %RunIco%
 
@@ -180,7 +199,11 @@ Class EditContextDialog
         iEditContextDialog := this
 
 		iEditContextDialog.PrepWatching()
-		SetHilite(hEditContextDialog_CodeBox)
+		;SetHilite(hEditContextDialog_CodeBox)
+		if(1 = gSyntaxHilighting)
+		{
+			SetHilite(hEditContextDialog_CodeBox)
+		}
 		
 	}
 	;Window Resize event
@@ -346,7 +369,8 @@ Class EditContextDialog
 		GuiControlGet, EditPos,Pos, EditContextDialog_EditButton
 		GuiControlGet, SelectProgPos,Pos, EditContextDialog_SelectProgramButton
 		GuiControlGet, ReloadPos,Pos, EditContextDialog_ReloadButton
-
+		GuiControlGet, SyntaxOnPos,Pos, EditContextDialog_SyntaxOnButton
+		GuiControlGet, SyntaxOffPos,Pos, EditContextDialog_SyntaxOffButton
 		;GuiControlGet, CNPos,Pos, EditContextDialog_ContextName_TextBox
 		;GuiControlGet, HKPos,Pos, EditContextDialog_HotKeys_TextBox
 		;GuiControlGet, SpkPos,Pos, EditContextDialog_SpeakText_TextBox
@@ -363,6 +387,8 @@ Class EditContextDialog
 		GuiControl, MoveDraw, EditContextDialog_SelectProgramButton, % "X" . (Width - sep - sep - ReloadPosW-sep-SelectProgPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditContextDialog_EditButton, % "X" . (Width - sep - sep - sep/2 - ReloadPosW-sep-SelectProgPosW - EditPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditContextDialog_RunButton, % "X" . (Width - sep - sep - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditContextDialog_SyntaxOnButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOnPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditContextDialog_SyntaxOffButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOffPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 
 		GuiControl, MoveDraw, EditContextDialog_Code_TextBox, % "W" . (Width-CodePosX-sep-sep) . " H" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep - sep - CodePosY)
 		GuiControl, MoveDraw, EditContextDialog_SpeakText_TextBox, % "W" . (Width-CodePosX-sep-sep)
@@ -484,6 +510,24 @@ EditContextDialogRecordingBut()
 	GuiControl, -Hidden, EditContextDialogRecordBut
 	GuiControl, +Hidden, EditContextDialogRecordingBut
 	hKeyGrabCtrl := 0
+}
+EditContextDialog_SyntaxOffButton()
+{
+	GuiControl, +Hidden, EditContextDialog_SyntaxOffButton
+	GuiControl, -Hidden, EditContextDialog_SyntaxOnButton
+	
+	gSyntaxHilighting = 1
+	SetHilite(hEditContextDialog_CodeBox)
+
+}
+EditContextDialog_SyntaxOnButton()
+{
+	GuiControl, +Hidden, EditContextDialog_SyntaxOnButton
+	GuiControl, -Hidden, EditContextDialog_SyntaxOffButton
+	gSyntaxHilighting = 0
+	RemoveHilite(hEditContextDialog_CodeBox)
+	
+	MsgBox, 64, Syntax Highlighing is OFF, Re-Open the dialog box for the change to take effect
 }
 return
 EditContextDialog_DoneResize:

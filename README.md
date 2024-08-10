@@ -1,5 +1,5 @@
 # HotKeySpeak
-Hot Key Speak is a AutoHotKey based system that allows defining javascript Command/Macros for Hot Keys and Voice Recognition. Macros are contextual to the active application.
+Hot Key Speak is a AutoHotKey based system that allows defining JavaScript Command/Macros for Hot Keys and Voice Recognition. Macros are contextual to the active application.
 
 ##Features
 1. Folder like Tree Context Nodes and Groups allows defining contextual commands.
@@ -40,21 +40,22 @@ First run will show the console with every tracing message in the app making it 
 
 ## *Code Box Issues
 
-The Code Box is broken and does not render the text fully, giving the impression you lost code. Selecting the tex will redraw the code properly. 
+The Code Box is broken and does not render the text fully, giving the impression you lost code. Selecting the text will redraw the code properly. 
 
 Also the caret is not moving right, causing confusion when typing text. 
 
+Added a Enable Syntax Highlighting under the code boxes to enable/disable it
+
 The Code box not longer does context sensitive help on highlighted keywords.
 
-Disabling the Code Box will fix these issues. You can Disable Code Box by renaming tmcsyntaxEB.dll to tmcsyntaxEB.dll.old, or deleting the file or remove the reference from the code. You will not noger have highlighting but the F1 context help will work.
 
-I recomend you use the External Code Editor method available bottom right buttons below the native code box.
+
 
 
 
 ## Other Issues
 
-If you navigate directly to the HotKeySpeak inteface from an application that is monitored by the program, the program will still think it's in the program and will send command to itself
+If you navigate directly to the HotKeySpeak interface from an application that is monitored by the program, the program will still think it's in the program and will send command to itself
 
 It very old Javascipt engine, not all features are present. 
 
@@ -62,10 +63,9 @@ Requires running with ahk 32bit.
 
 Full Compile Bat file was never completed.
 
-Sometime the program quits, possibly a internal erro
+Sometime the program quits, possibly a internal error
 
 It's possible the program can crash the monitored application, use at own risk.
 
-The Context Help for selected text does not work sometimes. you have to click the Keyword in the treeview, then scroll up to the branch node and click it to load the right panel, then go back and click the treview item you wanted help about.
-
+The Context Help for selected text does not work sometimes. you have to click the Keyword in the treeview, then scroll up to the branch node and click it to load the right panel, then go back and click the treeview item you wanted help about.
 

@@ -8,6 +8,8 @@ global EditCommandDialog_HotKeys_TextBox
 global EditCommandDialog_Code_TextBox
 global EditCommandDialog_StatusBar
 
+
+
 global EditCommandDialog_EditButton
 global EditCommandDialog_SelectProgramButton
 global EditCommandDialog_ReloadButton
@@ -28,6 +30,23 @@ global EditCommandDialogRecordBut
 global hEditCommandDialogRecordBut
 global EditCommandDialogRecordingBut
 global hEditCommandDialog_HotKeys_TextBox
+
+
+global EditCommandDialog_SyntaxOnButton
+global hEditCommandDialog_SyntaxOnButton
+global EditCommandDialog_SyntaxOffButton
+global hEditCommandDialog_SyntaxOffButton
+
+global EditExeDialog_SyntaxOnButton
+global hEditExeDialog_SyntaxOnButton
+global EditExeDialog_SyntaxOffButton
+global EditExeDialog_SyntaxOffButton
+
+
+global EditExeDialog_SyntaxOnButton
+global hEditExeDialog_SyntaxOnButton
+global EditExeDialog_SyntaxOffButton
+global hEditExeDialog_SyntaxOffButton
 
 global EditCommandDialog_Enabled
 
@@ -150,7 +169,23 @@ Class EditCommandDialog
 		
 		Gui, Color,, %ButtonBackColor%
 		Gui, Font, c%ButtonFontColor% w%ButtonFontWeight% s%ButtonFontSize%, %ButtonFontName%
-         
+        
+;Syntax OnOff
+
+		SyntaxOffIco := A_ScriptDir . "\Graphics\Icons\SyntaxOff.ico"
+		SyntaxOnIco := A_ScriptDir . "\Graphics\Icons\SyntaxOn.ico"
+		if(1 == gSyntaxHilighting)
+		{
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditCommandDialog_SyntaxOffButton gEditCommandDialog_SyntaxOffButton HWNDhEditCommandDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditCommandDialog_SyntaxOnButton gEditCommandDialog_SyntaxOnButton HWNDhEditCommandDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+		else
+		{
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditCommandDialog_SyntaxOffButton gEditCommandDialog_SyntaxOffButton HWNDhEditCommandDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditCommandDialog_SyntaxOnButton gEditCommandDialog_SyntaxOnButton HWNDhEditCommandDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+
+
         RunIco := A_ScriptDir . "\Graphics\Icons\RunCode.ico"
 		Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditCommandDialog_RunButton gEditCommandDialog_RunButton HWNDhEditCommandDialog_RunButton, %RunIco%
 
@@ -182,7 +217,10 @@ Class EditCommandDialog
         iEditCommandDialog := this
 
 		iEditCommandDialog.PrepWatching()
-		SetHilite(hEditCommandDialog_CodeBox)
+		if(1 = gSyntaxHilighting)
+		{
+			SetHilite(hEditCommandDialog_CodeBox)
+		}
 	}
 	;Window Resize event
 	OnGuiSize(GuiHwnd, EventInfo, Width, Height)
@@ -348,6 +386,8 @@ Class EditCommandDialog
 		GuiControlGet, EditPos,Pos, EditCommandDialog_EditButton
 		GuiControlGet, SelectProgPos,Pos, EditCommandDialog_SelectProgramButton
 		GuiControlGet, ReloadPos,Pos, EditCommandDialog_ReloadButton
+		GuiControlGet, SyntaxOnPos,Pos, EditCommandDialog_SyntaxOnButton
+		GuiControlGet, SyntaxOffPos,Pos, EditCommandDialog_SyntaxOffButton
 
 		GuiControlGet, CommandLink1Pos,Pos, CommandLink1
 
@@ -365,6 +405,8 @@ Class EditCommandDialog
 		GuiControl, MoveDraw, EditCommandDialog_SelectProgramButton, % "X" . (Width - sep - sep - ReloadPosW-sep-SelectProgPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditCommandDialog_EditButton, % "X" . (Width - sep - sep - sep/2 - ReloadPosW-sep-SelectProgPosW - EditPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditCommandDialog_RunButton, % "X" . (Width - sep - sep - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditCommandDialog_SyntaxOnButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOnPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditCommandDialog_SyntaxOffButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOffPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 
 		GuiControl, MoveDraw, EditCommandDialog_Code_TextBox, % "W" . (Width-CodePosX-sep-sep) . " H" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep - sep - CodePosY)
 		GuiControl, MoveDraw, EditCommandDialog_SpeakText_TextBox, % "W" . (Width-CodePosX-sep-sep)
@@ -482,6 +524,26 @@ EditCommandDialogRecordingBut()
 	GuiControl, -Hidden, EditCommandDialogRecordBut
 	GuiControl, +Hidden, EditCommandDialogRecordingBut
 	hKeyGrabCtrl := 0
+}
+
+
+EditCommandDialog_SyntaxOffButton()
+{
+	GuiControl, +Hidden, EditCommandDialog_SyntaxOffButton
+	GuiControl, -Hidden, EditCommandDialog_SyntaxOnButton
+	
+	gSyntaxHilighting = 1
+	SetHilite(hEditCommandDialog_CodeBox)
+
+}
+EditCommandDialog_SyntaxOnButton()
+{
+	GuiControl, +Hidden, EditCommandDialog_SyntaxOnButton
+	GuiControl, -Hidden, EditCommandDialog_SyntaxOffButton
+	gSyntaxHilighting = 0
+	RemoveHilite(hEditCommandDialog_CodeBox)
+	
+	MsgBox, 64, Syntax Highlighing is OFF, Re-Open the dialog box for the change to take effect
 }
 return
 EditCommandDialog_DoneResize:

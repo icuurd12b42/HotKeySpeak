@@ -27,6 +27,11 @@ global EditWindowContextDialog_SepLine2
 global EditWindowContextDialog_Width
 global EditWindowContextDialog_Height
 
+global EditWindowContextDialog_SyntaxOnButton
+global hEditWindowContextDialog_SyntaxOnButton
+global EditWindowContextDialog_SyntaxOffButton
+global hEditWindowContextDialog_SyntaxOffButton
+
 global WindowContextLink1
 
 global EditWindowContextDialog_Enabled
@@ -167,6 +172,22 @@ Class EditWindowContextDialog
 		;t:=" Reload "
 		;Gui, Add, Button, x+m vEditWindowContextDialog_ReloadButton gEditWindowContextDialog_ReloadButton, %t%
 
+;Syntax OnOff
+
+		SyntaxOffIco := A_ScriptDir . "\Graphics\Icons\SyntaxOff.ico"
+		SyntaxOnIco := A_ScriptDir . "\Graphics\Icons\SyntaxOn.ico"
+		if(1 == gSyntaxHilighting)
+		{
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditWindowContextDialog_SyntaxOffButton gEditWindowContextDialog_SyntaxOffButton HWNDhEditWindowContextDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditWindowContextDialog_SyntaxOnButton gEditWindowContextDialog_SyntaxOnButton HWNDhEditWindowContextDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+		else
+		{
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditWindowContextDialog_SyntaxOffButton gEditWindowContextDialog_SyntaxOffButton HWNDhEditWindowContextDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditWindowContextDialog_SyntaxOnButton gEditWindowContextDialog_SyntaxOnButton HWNDhEditWindowContextDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+
+
 		RunIco := A_ScriptDir . "\Graphics\Icons\RunCode.ico"
 		Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditWindowContextDialog_RunButton gEditWindowContextDialog_RunButton HWNDhEditWindowContextDialog_RunButton, %RunIco%
 
@@ -198,8 +219,11 @@ Class EditWindowContextDialog
         iEditWindowContextDialog := this
 
 		iEditWindowContextDialog.PrepWatching()
-		SetHilite(hEditWindowContextDialog_CodeBox)
 		
+		if(1 = gSyntaxHilighting)
+		{
+			SetHilite(hEditWindowContextDialog_CodeBox)
+		}
 	}
 	;Window Resize event
 	OnGuiSize(GuiHwnd, EventInfo, Width, Height)
@@ -348,6 +372,8 @@ Class EditWindowContextDialog
 		GuiControlGet, EditPos,Pos, EditWindowContextDialog_EditButton
 		GuiControlGet, SelectProgPos,Pos, EditWindowContextDialog_SelectProgramButton
 		GuiControlGet, ReloadPos,Pos, EditWindowContextDialog_ReloadButton
+		GuiControlGet, SyntaxOnPos,Pos, EditWindowContextDialog_SyntaxOnButton
+		GuiControlGet, SyntaxOffPos,Pos, EditWindowContextDialog_SyntaxOffButton
 
 		;GuiControlGet, CNPos,Pos, EditWindowContextDialog_ContextName_TextBox
 		;GuiControlGet, HKPos,Pos, EditWindowContextDialog_ClassName_TextBox
@@ -364,6 +390,8 @@ Class EditWindowContextDialog
 		GuiControl, MoveDraw, EditWindowContextDialog_SelectProgramButton, % "X" . (Width - sep - sep - ReloadPosW-sep-SelectProgPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditWindowContextDialog_EditButton, % "X" . (Width - sep - sep - sep/2 - ReloadPosW-sep-SelectProgPosW - EditPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditWindowContextDialog_RunButton, % "X" . (Width - sep - sep - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditWindowContextDialog_SyntaxOnButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOnPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditWindowContextDialog_SyntaxOffButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOffPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		
 		GuiControl, MoveDraw, EditWindowContextDialog_Code_TextBox, % "W" . (Width-CodePosX-sep-sep) . " H" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep - sep - CodePosY)
 		GuiControl, MoveDraw, EditWindowContextDialog_ControlName_TextBox, % "W" . (Width-CodePosX-sep-sep)
@@ -529,6 +557,24 @@ WindowContextLink1()
 	{
 		DoHelp("WindowContext")
 	}
+}
+EditWindowContextDialog_SyntaxOffButton()
+{
+	GuiControl, +Hidden, EditWindowContextDialog_SyntaxOffButton
+	GuiControl, -Hidden, EditWindowContextDialog_SyntaxOnButton
+	
+	gSyntaxHilighting = 1
+	SetHilite(hEditWindowContextDialog_CodeBox)
+
+}
+EditWindowContextDialog_SyntaxOnButton()
+{
+	GuiControl, +Hidden, EditWindowContextDialog_SyntaxOnButton
+	GuiControl, -Hidden, EditWindowContextDialog_SyntaxOffButton
+	gSyntaxHilighting = 0
+	RemoveHilite(hEditWindowContextDialog_CodeBox)
+	
+	MsgBox, 64, Syntax Highlighing is OFF, Re-Open the dialog box for the change to take effect
 }
 return
 EditWindowContextDialog_DoneResize:

@@ -173,6 +173,8 @@ global TextBoxFontWeight := ReadIni("Settings.ini","TextBox","FontWeight", "400"
 global TextBoxFontSize := ReadIni("Settings.ini","TextBox","FontSize", "12")
 global TextBoxFontName := ReadIni("Settings","TextBox","FontName", "Arial")
 
+global gSyntaxHilighting := ReadIni("Settings.ini","CodeBox","SyntaxHilighting", "0")
+
 global CodeBoxBackColor := ReadIni("Settings.ini","CodeBox","BackColor", "000000")
 global CodeBoxFontColor := ReadIni("Settings.ini","CodeBox","FontColor", "CCCCCC")
 global CodeBoxFontWeight := ReadIni("Settings.ini","CodeBox","FontWeight", "400")
@@ -252,7 +254,7 @@ Cleanup(ExitReason, ExitCode)
     WriteIni("Settings.ini","DEBUGOPTIONS","LEVEL", Debug.GetDebugLevel())
     WriteIni("Settings.ini","DEBUGOPTIONS","LogToFile", Debug.GetLogToFile())
 
-
+    WriteIni("Settings.ini","CodeBox","SyntaxHilighting", gSyntaxHilighting)
     
     FreeSyntaxModule()
 

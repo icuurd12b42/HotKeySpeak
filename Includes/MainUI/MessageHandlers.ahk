@@ -12,12 +12,16 @@ global hEditCommandDialog_ReloadButton := 0
 global hEditCommandDialog_EditButton:= 0
 global hEditCommandDialog_RunButton := 0
 global hEditCommandDialog_SelectProgramButton := 0
+global hEditCommandDialog_SyntaxOnButton :=0
+global hEditCommandDialog_SyntaxOffButton :=0
 
 global hContextLink1:= 0
 global hEditContextDialog_ReloadButton := 0
 global hEditContextDialog_EditButton:= 0
 global hEditContextDialog_RunButton := 0
 global hEditContextDialog_SelectProgramButton := 0
+global hEditContextDialog_SyntaxOnButton :=0
+global hEditContextDialog_SyntaxOffButton :=0
 
 global hExeLink1:= 0
 global hEditExeDialog_SelectExeProgramButton := 0
@@ -25,6 +29,8 @@ global hEditExeDialog_ReloadButton := 0
 global hEditExeDialog_EditButton:= 0
 global hEditExeDialog_RunButton := 0
 global hEditExeDialog_SelectProgramButton := 0
+global hEditExeDialog_SyntaxOnButton :=0
+global hEditExeDialog_SyntaxOffButton :=0
 
 global hGroupLink1:= 0
 
@@ -34,6 +40,8 @@ global hEditWindowContextDialog_EditButton:= 0
 global hEditWindowContextDialog_RunButton := 0
 global hEditWindowContextDialog_SelectProgramButton := 0
 global hEditWindowContextDialog_FindWindowButton := 0
+global hEditWindowContextDialog_SyntaxOnButton :=0
+global hEditWindowContextDialog_SyntaxOffButton :=0
 
 global hProcessLink1 := 0
 global hListProcessDialog_ChoseFileButton := 0
@@ -84,16 +92,20 @@ WM_MOUSEMOVE(wParam,lParam, msg, hwnd){
         HandControls.push(hEditCommandDialog_SelectProgramButton)
         HandControls.push(hEditCommandDialogRecordBut)
         HandControls.push(hEditCommandDialogRecordingBut)
-        
+        HandControls.push(hEditCommandDialog_SyntaxOnButton)
+        HandControls.push(hEditCommandDialog_SyntaxOffButton)        
 
         HandControls.push(hContextLink1)
+        
+
         HandControls.push(hEditContextDialog_ReloadButton)
         HandControls.push(hEditContextDialog_EditButton)
         HandControls.push(hEditContextDialog_RunButton)
         HandControls.push(hEditContextDialog_SelectProgramButton)
         HandControls.push(hEditContextDialogRecordBut)
         HandControls.push(hEditContextDialogRecordingBut)
-
+        HandControls.push(hEditContextDialog_SyntaxOnButton)
+        HandControls.push(hEditContextDialog_SyntaxOffButton)
 
         HandControls.push(hExeLink1)
         HandControls.push(hEditExeDialog_SelectExeProgramButton)
@@ -101,6 +113,8 @@ WM_MOUSEMOVE(wParam,lParam, msg, hwnd){
         HandControls.push(hEditExeDialog_EditButton)
         HandControls.push(hEditExeDialog_RunButton)
         HandControls.push(hEditExeDialog_SelectProgramButton)
+        HandControls.push(hEditExeDialog_SyntaxOnButton)
+        HandControls.push(hEditExeDialog_SyntaxOffButton)
 
         HandControls.push(hGroupLink1)
 
@@ -110,6 +124,8 @@ WM_MOUSEMOVE(wParam,lParam, msg, hwnd){
         HandControls.push(hEditWindowContextDialog_RunButton)
         HandControls.push(hEditWindowContextDialog_SelectProgramButton)
         HandControls.push(hEditWindowContextDialog_FindWindowButton)
+        HandControls.push(hEditWindowContextDialog_SyntaxOnButton)
+        HandControls.push(hEditWindowContextDialog_SyntaxOffButton)
 
         HandControls.push(hProcessLink1)
         HandControls.push(hListProcessDialog_ChoseFileButton)

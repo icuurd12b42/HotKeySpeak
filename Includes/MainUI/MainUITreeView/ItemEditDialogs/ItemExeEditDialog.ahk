@@ -25,6 +25,11 @@ global EditExeDialog_Enabled
 global hEditExeDialog_CodeBox
 global ExeLink1
 
+global EditCommandDialog_SyntaxOffButton
+global hEditCommandDialog_SyntaxOffButton
+global EditExeDialog_SyntaxOffButton
+global hEditExeDialog_SyntaxOffButton
+
 Class EditExeDialog
 {
     m_TVItem :=
@@ -145,6 +150,21 @@ Class EditExeDialog
 		Gui, Color, , %ButtonBackColor%
 		Gui, Font, c%ButtonFontColor% w%ButtonFontWeight% s%ButtonFontSize%, %ButtonFontName%
         
+		SyntaxOffIco := A_ScriptDir . "\Graphics\Icons\SyntaxOff.ico"
+		SyntaxOnIco := A_ScriptDir . "\Graphics\Icons\SyntaxOn.ico"
+		if(1 == gSyntaxHilighting)
+		{
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditExeDialog_SyntaxOffButton gEditExeDialog_SyntaxOffButton HWNDhEditExeDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditExeDialog_SyntaxOnButton gEditExeDialog_SyntaxOnButton HWNDhEditExeDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+		else
+		{
+			Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditExeDialog_SyntaxOffButton gEditExeDialog_SyntaxOffButton HWNDhEditExeDialog_SyntaxOffButton, %SyntaxOffIco%
+			Gui, Add, Picture, +Hidden x+m w%LinkIconSize% h-1 vEditExeDialog_SyntaxOnButton gEditExeDialog_SyntaxOnButton HWNDhEditExeDialog_SyntaxOnButton, %SyntaxOnIco%
+		}
+
+
+
 		RunIco := A_ScriptDir . "\Graphics\Icons\RunCode.ico"
 		Gui, Add, Picture, x+m w%LinkIconSize% h-1 vEditExeDialog_RunButton gEditExeDialog_RunButton HWNDhEditExeDialog_RunButton, %RunIco%
 
@@ -177,7 +197,11 @@ Class EditExeDialog
 
 		iEditExeDialog.PrepWatching()
 		
-		SetHilite(hEditExeDialog_CodeBox)
+		;SetHilite(hEditExeDialog_CodeBox)
+		if(1 = gSyntaxHilighting)
+		{
+			SetHilite(hEditExeDialog_CodeBox)
+		}
 		
 	}
 	;Window Resize event
@@ -363,6 +387,9 @@ Class EditExeDialog
 		;SelectExeProgPosW :=0
 		GuiControlGet, ReloadPos,Pos, EditExeDialog_ReloadButton
 
+		GuiControlGet, SyntaxOnPos,Pos, EditExeDialog_SyntaxOnButton
+		GuiControlGet, SyntaxOffPos,Pos, EditExeDialog_SyntaxOffButton
+
 		GuiControlGet, CodePos,Pos, EditExeDialog_Code_TextBox
 		
 		GuiControlGet, ExeLink1Pos,Pos, ExeLink1
@@ -375,6 +402,8 @@ Class EditExeDialog
 		GuiControl, MoveDraw, EditExeDialog_SelectProgramButton, % "X" . (Width - sep - sep - ReloadPosW-sep-SelectProgPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditExeDialog_EditButton, % "X" . (Width - sep - sep - sep/2 - ReloadPosW-sep-SelectProgPosW - EditPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 		GuiControl, MoveDraw, EditExeDialog_RunButton, % "X" . (Width - sep - sep - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditExeDialog_SyntaxOnButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOnPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
+		GuiControl, MoveDraw, EditExeDialog_SyntaxOffButton, % "X" . (Width - sep - sep - sep/2 - sep/2 -sep - ReloadPosW-sep-SelectProgPosW - EditPosW - RunPosW-SyntaxOffPosW) . " Y" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep)
 
 		GuiControl, MoveDraw, EditExeDialog_SelectExeProgramButton, % "X" . (Width -sep -sep - SelectExeProgPosW)
 		GuiControl, MoveDraw, EditExeDialog_Code_TextBox, % "W" . (Width-CodePosX-sep-sep) . " H" . (Height - StatusPosH - CancelPosH - ReloadPosH - sep - sep - sep - sep - CodePosY)
@@ -509,6 +538,26 @@ ExeLink1()
 		DoHelp("Exe")
 	}
 }
+
+EditExeDialog_SyntaxOffButton()
+{
+	GuiControl, +Hidden, EditExeDialog_SyntaxOffButton
+	GuiControl, -Hidden, EditExeDialog_SyntaxOnButton
+	
+	gSyntaxHilighting = 1
+	SetHilite(hEditExeDialog_CodeBox)
+
+}
+EditExeDialog_SyntaxOnButton()
+{
+	GuiControl, +Hidden, EditExeDialog_SyntaxOnButton
+	GuiControl, -Hidden, EditExeDialog_SyntaxOffButton
+	gSyntaxHilighting = 0
+	RemoveHilite(hEditExeDialog_CodeBox)
+	
+	MsgBox, 64, Syntax Highlighing is OFF, Re-Open the dialog box for the change to take effect
+}
+
 return
 EditExeDialog_DoneResize:
 {
