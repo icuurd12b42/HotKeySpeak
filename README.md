@@ -26,11 +26,11 @@ Install require components
 4. Make sure the paths specified by the variables match your system for the AHK location and the project location
 5. Run the batch file.
 
-The batch file is there to make sure the program is run with the ansii 32 runner.
+The batch file is there to make sure the program is run with the ansi-32 runner.
 It is best to make a exe so that the program can be pinned and have shortcuts...
 
 ### To make an exe
-The github project now includes the ansii32 compiled version as HotKeySpead.exe, you can compile it yourself.
+The github project now includes the ansi-32 compiled version as HotKeySpead.exe, you can compile it yourself.
 
 #### With the Batch File
 1) Right click Edit the full_compile.bat batch file
