@@ -30,7 +30,7 @@ The batch file is there to make sure the program is run with the ansi-32 runner.
 It is best to make a exe so that the program can be pinned and have shortcuts...
 
 ### To make an exe
-The github project now includes the ansi-32 compiled version as HotKeySpead.exe, you can compile it yourself.
+The GitHub project now includes the ansi-32 compiled version as HotKeySpead.exe, you can compile it yourself.
 
 #### With the Batch File
 1) Right click Edit the full_compile.bat batch file
@@ -39,12 +39,13 @@ The github project now includes the ansi-32 compiled version as HotKeySpead.exe,
 4) HotKeySpeak.exe will be created in the project folder
 
 #### Manual Steps
-1. Run AutohotKey's "Convert .ahk to .exe"
+1. Run AutoHotKey's "Convert .ahk to .exe"
 4. Select <install_folder>\HotKeySpeak.ahk as source
 5. Select <install_folder>\HotKeySpeak.exe as destination
 6. Select <install_folder>\Graphics\Icons\HotKeySpeak.ico as icon
 7. Select ANSI 32Bit as Base File (bin)
 8. Hit Convert
+
 The exe can be run from any location, including a desktop or a pinned task bar shortcut
 
 First run may show the console with every tracing message in the app making it slow to boot. Go in the options to set the console reporting to "Coder Information"
@@ -72,7 +73,7 @@ If you navigate directly to the HotKeySpeak interface from an application that i
 
 It very old JavaScript engine, not all features are present. 
 
-Requires running with ahk 32bit.
+Requires running with AHK ANSI-32bit runner.
 
 Sometime the program quits, possibly a internal error
 
