@@ -1018,6 +1018,7 @@ function CountTaps(period,maxTaps,key)
             tp = d2.getTime()-d1.getTime();
             Sleep(10);
         }
+        OutputDebug("Taps Count for " + key + ": " + tapsCt);
         return tapsCt;
     }
     catch(e) //catch error
@@ -1116,7 +1117,6 @@ HKS.Action.Run("Includes");</Code><elements><element text="_Includes" type="5" g
 //in the Application Node Code to define the functions at activation time.
 //You can copy this object or it's group and paste it in other 
 //applications you are writing script for
-
 
 function TapOrLongPress(delay,key)
 {
@@ -1470,6 +1470,7 @@ function CountTaps(period,maxTaps,key)
             tp = d2.getTime()-d1.getTime();
             Sleep(10);
         }
+        OutputDebug("Taps Count for " + key + ": " + tapsCt);
         return tapsCt;
     }
     catch(e) //catch error
@@ -1497,9 +1498,9 @@ function CountTaps(period,maxTaps,key)
         var longPress = false;
         var tap = false;
         //Tap or long press
-        if( TapOrLongPress(200,"B") === "T")
+        if( TapOrLongPress(150,"B") === "T")
         {
-            if(CountTaps(100,1,"B")==1)  //TapOrLongPress already ate one of the tapsn that why maxTaps is 1
+            if(CountTaps(150,1,"B")==1)  //TapOrLongPress already ate one of the tapsn that why maxTaps is 1
             {
                 doubleTap = true;
             }
@@ -1617,7 +1618,45 @@ else //"LP" or "" returned
 {
     //Long Press
     Send("{PgDn}");
-}</Code></element></elements></element><element text="domekeeper.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Dome Keeper\domekeeper.exe" appname="Dome Keeper"><Code>//The functions are defined in the Includes command
+}</Code></element><element text="TargetOrTractor" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>T</HotKeys><Code>//Selects T for targeting and double tap T for tractor beam
+//Long press is tractor beam off
+
+//calling function as it's being declared isolated the variables declared from the rest
+(function() {
+     
+    try //Try to do this...
+    {
+        //Tap or long press
+        if( TapOrLongPress(150,"T") === "T")
+        {
+            if(CountTaps(150,1,"T")==1)  //TapOrLongPress already ate one of the taps that why maxTaps is 1
+            {
+                //double tap, tractor beam on
+                Hotkey("t", "Off");
+                Send("^t");
+                Hotkey("t", "On"); 
+            }
+            else
+            {
+                //tap, target
+                Hotkey("t", "Off");
+                Send("t");
+                Hotkey("t", "On");   
+            }
+        }
+        else //"LP" or "" returned
+        {
+            //Long Press, tractor beam off
+            Hotkey("t", "Off");
+            Send("+^t");
+            Hotkey("t", "On"); 
+        }
+        
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element><element text="domekeeper.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Dome Keeper\domekeeper.exe" appname="Dome Keeper"><Code>//The functions are defined in the Includes command
 HKS.Action.Run("Includes");</Code><elements><element text="_Includes" type="5" grouptype="2" disabled="0"><elements><element text="Includes" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys></HotKeys><Code>//This command is used as an include to import the function in other projects
 //Call 
 // HKS.Action.Run("Includes");
