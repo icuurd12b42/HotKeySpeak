@@ -60,9 +60,9 @@ Also the caret is not moving right, causing confusion when typing text.
 
 Added a Enable Syntax Highlighting under the code boxes to enable/disable it
 
-The Code box not longer does context sensitive help on highlighted keywords.
+The Code box no longer does context sensitive help on highlighted keywords.
 
-
+I strongly recommend installing MS Visual Studio Code or similar with an autosave feature to use as an external editor as the fix is slow to come for this. 
 
 
 
