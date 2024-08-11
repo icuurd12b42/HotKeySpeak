@@ -38,6 +38,10 @@ The GitHub project now includes the ansi-32 compiled version as HotKeySpead.exe,
 3) Run the batch file.
 4) HotKeySpeak.exe will be created in the project folder
 
+### NOTE for Developers
+I you plan on doing coding on the core files and need to re-compiled often because of that, make sure to add an exclusion in MS Windows Security otherwise at one point Windows will just delete the file.
+
+
 #### Manual Steps
 1. Run AutoHotKey's "Convert .ahk to .exe"
 4. Select <install_folder>\HotKeySpeak.ahk as source
@@ -68,8 +72,6 @@ I strongly recommend installing MS Visual Studio Code or similar with an autosav
 
 
 ## Other Issues
-
-If you navigate directly to the HotKeySpeak interface from an application that is monitored by the program, the program will still think it's in the program and will send command to itself
 
 It very old JavaScript engine, not all features are present. 
 
