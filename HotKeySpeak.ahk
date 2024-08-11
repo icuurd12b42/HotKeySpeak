@@ -84,6 +84,9 @@ global gSapiHold := false
 global gHKAllowKeyPausing := false
 global gHKPausingKey := "F11"
 
+;Bug Fix to disable hot keys when switching back to program from monitored application
+global gActiveHotKeys := []
+
 Debug.SetDebugLevel(5)
 
 DoHelp(Topic)
