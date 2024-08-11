@@ -10,6 +10,35 @@
 ;[TV_TYPES.CONTEXT,"CONTEXTNAME","F2",ContextArray])
 ;[TV_TYPES.WINDOWCONTEXT,"CONTEXTNAME",ContextArray])
 
+;;;;;;;;
+;;Bug Fix to disable hot keys when switching back to program from monitored application
+; this maintains an array of registered hot keys so we can batch destroy them when HotKeySpeak receives input focus
+; so not to have notpad hot keys triger while editing notpad macros in the interface
+ArrayItemExist(array, itemToFind) {
+    ; Check if array is an object (AutoHotkey array)
+    if !IsObject(array) {
+        return false
+    }
+    
+    ; Loop through the array
+    for index, value in array {
+        if (value = itemToFind) {
+            return true
+        }
+    }
+    
+    return false
+}
+RememberHotKey(keyName) {
+    ; Check if the keyName is already in the array
+    ; Add the hotkey to the array
+    if (!(ArrayItemExist(gActiveHotKeys, keyName)))
+    {
+        gActiveHotKeys.push(keyName)
+    }
+     
+}
+;;;;;;;;
 
 class HotKeySystem
 {
@@ -21,6 +50,7 @@ class HotKeySystem
     m_old_extra_data :=
     Init()
     {
+        
         HotKeySystem.m_PrimaryHotKeysArray := 0
         HotKeySystem.m_SecondaryHotKeysArray := 0
         HotKeySystem.m_TerciaryHotKeysArray := 0
@@ -35,6 +65,10 @@ class HotKeySystem
         if(KeyName == "") 
             return
         Debug.WriteStackPushPop("HotKeySystem.SetupHotKey() " . KeyName . " " . ONOFF,Debug.ErrLevelCore)
+
+        ;Bug Fix to disable hot keys when switching back to progrm from monitored application
+        RememberHotKey(KeyName)
+        
         Try {
             Hotkey, %KeyName%, HotKeyHandler, %ONOFF%
         }
@@ -107,6 +141,7 @@ class HotKeySystem
     ;event manager notification
     OnProcessActivate(extra_data)
     {
+        gActiveHotKeys := []
         HotKeySystem.m_old_process_extra_data := extra_data
         ;if(gHKDisabled)
         ;{
