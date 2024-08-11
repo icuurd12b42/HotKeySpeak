@@ -1601,8 +1601,9 @@ else //"LP" or "" returned
     Sleep(100);
     Send("o");
 
-    //Stay on fire at will for a but
+    //Stay on fire at will for a bit the they launch missiles
     Sleep(3000);
+
     //tap 0 to set back to paused and close the panel
     Send("o");
     Send("{Esc}");
