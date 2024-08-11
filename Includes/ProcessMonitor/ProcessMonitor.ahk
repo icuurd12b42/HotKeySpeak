@@ -1,4 +1,28 @@
+; Function to safely disable a hotkey
+DisableHotkey(hotkey) {
+        
+    try {
+        Hotkey, %hotkey%, Off
+    } catch e {
+        
+    }
 
+
+}
+;Bug Fix
+; this disables all hot keys recorded in th active hotkey list
+; so not to have notpad hot keys triger while editing notpad macros in the interface
+DisableAllActiveKeys() {
+    try {
+        Loop, % gActiveHotKeys.MaxIndex() {
+            hotkey := gActiveHotKeys[A_Index]
+            DisableHotkey(hotkey)
+        }
+    } catch e {
+        
+    }
+    gActiveHotKeys := []
+}
 Class ProcessMonitor
 {
     m_ProcessName :=
@@ -255,6 +279,8 @@ Class ProcessMonitor
             {
                 Debug.WriteStack("PID Is Mine",Debug.ErrLevelCoreInfo)
                 ProcessMonitor.m_IsMine := true
+                ;BUG FIX to disable registered hot keys when switching back to program from monitored application
+                DisableAllActiveKeys()
             }
 
             if(OutNameNoExt!=ProcessMonitor.m_ProcessName) ;Process changed? update path
@@ -269,7 +295,7 @@ Class ProcessMonitor
             ProcessMonitor.m_WindowClassName := ClassName
             
 
-            if(!ProcessMonitor.m_IsMine) ;call the treeview updating
+            ;if(!ProcessMonitor.m_IsMine) ;call the treeview updating
             {
                 Debug.WriteStack("",Debug.ErrLevelUsefulInfo)
                 Debug.WriteStack("------------------",Debug.ErrLevelUsefulInfo)
