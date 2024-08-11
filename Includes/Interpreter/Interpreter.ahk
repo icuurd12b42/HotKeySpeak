@@ -350,6 +350,7 @@ Class Interpreter
 		}
 		catch e  ; Handles the first error/exception raised by the block above.
 		{
+
 			Process:=EventManager.m_current_process_extra_data.GetItemText()
 			ActionName:=EventManager.m_current_item_extra_data.GetItemText()
 			if(!ActionName)
@@ -359,32 +360,35 @@ Class Interpreter
 			stack :=Debug.GetStack()
 			m := e.Message
 			decoded := DecodeActiveScriptMessage(m)
-			Debug.WriteNL("",Debug.ErrCodingInfo)
-			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
-			Debug.WriteNL("Active Script Exception",Debug.ErrCodingInfo)
-			Debug.WriteNL("Process: " . Process, Debug.ErrCodingInfo)
-			Debug.WriteNL("Action: " . ActionName, Debug.ErrCodingInfo)
-			Debug.WriteNL("Error Code: " decoded["ErrorCode"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Source: " decoded["Source"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Description: " decoded["Description"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Line: " decoded["Line"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Column: " decoded["Column"],Debug.ErrCodingInfo)
-			Debug.WriteNL("LineText: " decoded["LineText"],Debug.ErrCodingInfo)
-			Debug.SetStack(5+(decoded["Column"])/2)
-			Debug.WriteStack("^",Debug.ErrCodingInfo)
-			Debug.SetStack(stack)
-
-			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
-			if(tvitem != "")
+			;prevent outputting erroneous exeption
+			if(decoded["Source"] != "")
 			{
+				Debug.WriteNL("",Debug.ErrCodingInfo)
 				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+				Debug.WriteNL("Active Script Exception",Debug.ErrCodingInfo)
+				Debug.WriteNL("Process: " . Process, Debug.ErrCodingInfo)
+				Debug.WriteNL("Action: " . ActionName, Debug.ErrCodingInfo)
+				Debug.WriteNL("Error Code: " decoded["ErrorCode"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Source: " decoded["Source"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Description: " decoded["Description"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Line: " decoded["Line"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Column: " decoded["Column"],Debug.ErrCodingInfo)
+				Debug.WriteNL("LineText: " decoded["LineText"],Debug.ErrCodingInfo)
+				Debug.SetStack(5+(decoded["Column"])/2)
+				Debug.WriteStack("^",Debug.ErrCodingInfo)
+				Debug.SetStack(stack)
+
+				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+				if(tvitem != "")
+				{
+					Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+				}
+				Debug.WriteNL("",Debug.ErrCodingInfo)
+				if(ProcessMonitor.IsWindowMine())
+				{
+					MsgBox, 262144, Active Script Exception, %m%
+				}
 			}
-			Debug.WriteNL("",Debug.ErrCodingInfo)
-			if(ProcessMonitor.IsWindowMine())
-			{
-				MsgBox, 262144, Active Script Exception, %m%
-			}
-			
 		}
     }
 	Eval(Code)
@@ -405,26 +409,30 @@ Class Interpreter
 			stack :=Debug.GetStack()
 			m := e.Message
 			decoded := DecodeActiveScriptMessage(m)
-			Debug.WriteNL("",Debug.ErrCodingInfo)
-			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
-			Debug.WriteNL("Active Script Exception",Debug.ErrCodingInfo)
-			Debug.WriteNL("Process: " . Process, Debug.ErrCodingInfo)
-			Debug.WriteNL("Action: " . ActionName, Debug.ErrCodingInfo)
-			Debug.WriteNL("Error Code: " decoded["ErrorCode"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Source: " decoded["Source"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Description: " decoded["Description"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Line: " decoded["Line"],Debug.ErrCodingInfo)
-			Debug.WriteNL("Column: " decoded["Column"],Debug.ErrCodingInfo)
-			Debug.WriteNL("LineText: " decoded["LineText"],Debug.ErrCodingInfo)
-			Debug.SetStack(5+(decoded["Column"])/2)
-			Debug.WriteStack("^",Debug.ErrCodingInfo)
-			Debug.SetStack(stack)
-
-			Debug.WriteNL("-------------",Debug.ErrCodingInfo)
-			Debug.WriteNL("",Debug.ErrCodingInfo)
-			if(ProcessMonitor.IsWindowMine())
+			;prevent outputting erroneous exeption
+			if(decoded["Source"] != "")
 			{
-				MsgBox, 262144, Active Script Exception, %m%
+				Debug.WriteNL("",Debug.ErrCodingInfo)
+				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+				Debug.WriteNL("Active Script Exception",Debug.ErrCodingInfo)
+				Debug.WriteNL("Process: " . Process, Debug.ErrCodingInfo)
+				Debug.WriteNL("Action: " . ActionName, Debug.ErrCodingInfo)
+				Debug.WriteNL("Error Code: " decoded["ErrorCode"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Source: " decoded["Source"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Description: " decoded["Description"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Line: " decoded["Line"],Debug.ErrCodingInfo)
+				Debug.WriteNL("Column: " decoded["Column"],Debug.ErrCodingInfo)
+				Debug.WriteNL("LineText: " decoded["LineText"],Debug.ErrCodingInfo)
+				Debug.SetStack(5+(decoded["Column"])/2)
+				Debug.WriteStack("^",Debug.ErrCodingInfo)
+				Debug.SetStack(stack)
+
+				Debug.WriteNL("-------------",Debug.ErrCodingInfo)
+				Debug.WriteNL("",Debug.ErrCodingInfo)
+				if(ProcessMonitor.IsWindowMine())
+				{
+					MsgBox, 262144, Active Script Exception, %m%
+				}
 			}
 		}
     }
