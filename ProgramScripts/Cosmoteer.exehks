@@ -1,0 +1,285 @@
+<elements><element text="Cosmoteer.exe" type="2" grouptype="2" disabled="0" path="D:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\Cosmoteer.exe" appname="Cosmoteer"><Code>//The functions are defined in the Includes command
+HKS.Action.Run("Includes");</Code><elements><element text="_Includes" type="5" grouptype="2" disabled="0"><elements><element text="Includes" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys></HotKeys><Code>//This command is used as an include to import the function in other projects
+//Call 
+// HKS.Action.Run("Includes");
+//in the Application Node Code to define the functions at activation time.
+//You can copy this object or it's group and paste it in other 
+//applications you are writing script for
+
+
+function TapOrLongPress(delay,key)
+{
+    //This function returns T or LP based on passed delay and key or mouse button code
+    
+    //delay   the time in ms to hold long press
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        //while the key or button is still down
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        //get the time at release
+        var d2 = new Date();
+        //Choose between the 2 macros based on delay value
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &lt; delay)
+        {
+            OutputDebug("Tap " + key);
+            return "T";
+        }
+        else
+        {
+            OutputDebug("Long Press " + key)
+            return "LP";
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return ""; //this should never happen
+}
+
+function WaitForRelease(key)
+{
+    //This function waits for the key to be released
+
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //while the key or button is still down
+        OutputDebug("Hold " + key)
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        OutputDebug("Released " + key)
+    }
+    catch(e) //catch error
+    {
+        
+    }
+}
+
+function CountTaps(period,maxTaps,key)
+{
+    //This function returns the number to times the key was tapped during a time period
+    
+    //period  the time period (ms) to allow for another key press to happen
+    //key     the "key" or "mouse button" ...
+    //maxTaps  the maximum number of taps allow, used for for early exit ot of time period
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        var tp = 0;
+        var d2;
+        var tapsCt = 0;
+        //While the time period has not expired and maxTap not reached
+        while(tp&lt;period &amp;&amp; tapsCt&lt;maxTaps)
+        {
+            if(""+GetKeyState(key , "P") == "1")
+            {
+                tapsCt++;
+                WaitForRelease(key);
+            }
+            //get the time period
+            var d2 = new Date();
+            //Choose between the 2 macros based on delay value
+            tp = d2.getTime()-d1.getTime();
+            Sleep(10);
+        }
+        OutputDebug("Taps Count for " + key + ": " + tapsCt);
+        return tapsCt;
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return 0; //
+}</Code></element></elements></element><element text="BuildOrRepair" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>B</HotKeys><Code>//Repairs the ships that are in the F? group slots
+//Assumes you use F1, F2,... to setup you ships in game and F1 is your main ship
+//Tap is Build, as usual, go to build more in selected ship.
+//Double Tap is repair current ship, goes to build then issues a repair on the selected ship.
+//Long Press is repair fleet. Assuming you set F1,F2,... Fn to all your ships
+
+
+//calling function as it's being declared isolated the variables declared from the rest
+(function() {
+     //Define the list of Function keys assigned to ships, 
+     //the first item is the main ship and will re-focus on that one when done if repair fleet is called
+     var FKeys = ["{F1}", "{F2}", "{F3}"];
+
+    try //Try to do this...
+    {
+
+        var doubleTap = false;
+        var longPress = false;
+        var tap = false;
+        //Tap or long press
+        if( TapOrLongPress(150,"B") === "T")
+        {
+            if(CountTaps(150,1,"B")==1)  //TapOrLongPress already ate one of the tapsn that why maxTaps is 1
+            {
+                doubleTap = true;
+            }
+            else
+            {
+                tap = true;
+            }
+            
+        }
+        else //"LP" or "" returned
+        {
+            //Long Press
+            longPress = true;
+        }
+        if(tap)
+        {
+            //Tap, process as usual
+            Hotkey("B", "Off");
+            Send("b");
+            Hotkey("B", "On");    
+        }
+        else if(doubleTap || longPress)
+        {
+            // send the repair commands
+            for (var i = 0; i &lt; FKeys.length; i++) {
+                //hit F1, F2, F3.... to activate the ships panel
+                //if repair all (long press), tap F1,F2 and so on from the arrays to select and repair each ship
+                if(longPress)
+                {
+                    Send(FKeys[i]);
+                    Sleep(100);
+                    Send(FKeys[i]);
+                    Sleep(100);
+                }
+                
+                //Go in Build
+                Hotkey("B", "Off");
+                Send("b");
+                Hotkey("B", "On"); 
+                Sleep(100);
+                //Hit Enter
+                Send("^{enter}");
+                Sleep(100);
+                //exit the Build screen By way of the paint panel
+                Send("p");
+                Sleep(100);
+                Send("p");
+                Sleep(100);
+                
+                //quit the loop is not Repair Fleet
+                if(doubleTap)
+                {
+                    break;
+                }
+                
+            }
+            //Activate the Main Ship when done reparing fleet
+            if(longPress)
+            {
+                Send(FKeys[0]);
+                Sleep(100);
+                Send(FKeys[0]);
+            }
+        }
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element><element text="EscAndSpeedUp" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton2</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton2") === "T")
+{
+    //Tap
+    Send("{Esc}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("{PgUp}");
+}</Code></element><element text="FireNukes" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>3</HotKeys><Code>//Nuke lauchers are set to hot key 3 in game,
+//Launchers are set to pause on default
+
+//Tap or long press
+if( TapOrLongPress(200,"3") === "T")
+{
+    //Tap, process as usual
+    Hotkey("3", "Off");
+    Send("3");
+    Hotkey("3", "On");    
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    //pop the panel 3, and hit o o to go from paused to fire at will
+    Hotkey("3", "Off");
+    Send("3");
+    Hotkey("3", "On"); 
+    Sleep(100);
+    Send("o");
+    Sleep(100);
+    Send("o");
+
+    //Stay on fire at will for a bit the they launch missiles
+    Sleep(3000);
+
+    //tap 0 to set back to paused and close the panel
+    Send("o");
+    Send("{Esc}");
+}</Code></element><element text="PauseAndSpeedDown" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>XButton1</HotKeys><Code>//Tap or long press
+if( TapOrLongPress(200,"XButton1") === "T")
+{
+    //Tap
+    Send("{Space}");
+}
+else //"LP" or "" returned
+{
+    //Long Press
+    Send("{PgDn}");
+}</Code></element><element text="TargetOrTractor" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys>T</HotKeys><Code>//Selects T for targeting and double tap T for tractor beam
+//Long press is tractor beam off
+
+//calling function as it's being declared isolated the variables declared from the rest
+(function() {
+     
+    try //Try to do this...
+    {
+        //Tap or long press
+        if( TapOrLongPress(150,"T") === "T")
+        {
+            if(CountTaps(150,1,"T")==1)  //TapOrLongPress already ate one of the taps that why maxTaps is 1
+            {
+                //double tap, tractor beam on
+                Hotkey("t", "Off");
+                Send("^t");
+                Hotkey("t", "On"); 
+            }
+            else
+            {
+                //tap, target
+                Hotkey("t", "Off");
+                Send("t");
+                Hotkey("t", "On");   
+            }
+        }
+        else //"LP" or "" returned
+        {
+            //Long Press, tractor beam off
+            Hotkey("t", "Off");
+            Send("+^t");
+            Hotkey("t", "On"); 
+        }
+        
+    }
+    catch(e) //catch error
+    {
+    }
+})();</Code></element></elements></element></elements>

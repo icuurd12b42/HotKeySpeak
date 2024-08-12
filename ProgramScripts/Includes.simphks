@@ -1,0 +1,106 @@
+<elements><element text="_Includes" type="5" grouptype="2" disabled="0"><elements><element text="Includes" type="3" grouptype="3" disabled="0"><SpeakText></SpeakText><HotKeys></HotKeys><Code>//This command is used as an include to import the function in other projects
+//Call 
+// HKS.Action.Run("Includes");
+//in the Application Node Code to define the functions at activation time.
+//You can copy this object or it's group and paste it in other 
+//applications you are writing script for
+
+
+function TapOrLongPress(delay,key)
+{
+    //This function returns T or LP based on passed delay and key or mouse button code
+    
+    //delay   the time in ms to hold long press
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        //while the key or button is still down
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        //get the time at release
+        var d2 = new Date();
+        //Choose between the 2 macros based on delay value
+        var dt = d2.getTime()-d1.getTime();
+        if(dt &lt; delay)
+        {
+            OutputDebug("Tap " + key);
+            return "T";
+        }
+        else
+        {
+            OutputDebug("Long Press " + key)
+            return "LP";
+        }
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return ""; //this should never happen
+}
+
+function WaitForRelease(key)
+{
+    //This function waits for the key to be released
+
+    //key     the "key" or "mouse button" ...
+
+    try //Try to do this...
+    {
+        //while the key or button is still down
+        OutputDebug("Hold " + key)
+        while(""+GetKeyState(key , "P") == "1")
+        {
+            Sleep(10);
+        }
+        OutputDebug("Released " + key)
+    }
+    catch(e) //catch error
+    {
+        
+    }
+}
+
+function CountTaps(period,maxTaps,key)
+{
+    //This function returns the number to times the key was tapped during a time period
+    
+    //period  the time period (ms) to allow for another key press to happen
+    //key     the "key" or "mouse button" ...
+    //maxTaps  the maximum number of taps allow, used for for early exit ot of time period
+
+    try //Try to do this...
+    {
+        //Get the time at press
+        var d1 = new Date();
+        var tp = 0;
+        var d2;
+        var tapsCt = 0;
+        //While the time period has not expired and maxTap not reached
+        while(tp&lt;period &amp;&amp; tapsCt&lt;maxTaps)
+        {
+            if(""+GetKeyState(key , "P") == "1")
+            {
+                tapsCt++;
+                WaitForRelease(key);
+            }
+            //get the time period
+            var d2 = new Date();
+            //Choose between the 2 macros based on delay value
+            tp = d2.getTime()-d1.getTime();
+            Sleep(10);
+        }
+        OutputDebug("Taps Count for " + key + ": " + tapsCt);
+        return tapsCt;
+    }
+    catch(e) //catch error
+    {
+        
+    }
+    return 0; //
+}</Code></element></elements></element></elements>
